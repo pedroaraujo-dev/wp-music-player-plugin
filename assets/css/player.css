@@ -84,6 +84,10 @@
   transition: transform 0.2s ease, background-color 0.2s ease;
 }
 
+.music-player__button:focus {
+  outline: none;
+}
+
 .music-player__button:hover {
   transform: scale(0.95);
 }
@@ -101,6 +105,12 @@
 .music-player__button .music-player__icon--play,
 .music-player__button .music-player__icon--pause {
   display: none;
+}
+
+.music-player__button .music-player__icon--play svg,
+.music-player__button .music-player__icon--pause svg {
+  width: 20px;
+  height: 20px;
 }
 
 /* ---------- TÍTULO E DURAÇÃO DO ÁUDIO ---------- */
