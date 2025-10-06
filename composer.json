@@ -1,0 +1,11 @@
+{
+  "name": "pedro/music-player",
+  "description": "Plugin WordPress de player de música, com shortcode.",
+  "type": "wordpress-plugin",
+  "autoload": {
+    "psr-4": {
+      "MusicPlayer\\": "src/"
+    }
+  },
+  "require": {}
+}
