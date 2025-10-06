@@ -1,7 +1,291 @@
-.music-player-bar {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    z-index: 9999;
+/* =========================================================
+   Music Player - Fixed Bar Styles (BEM)
+   ========================================================= */
+
+.music-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
+  background: linear-gradient(to right, #f77f00, #fcbf49);
+  color: #fff;
+  padding: 0.5rem 1rem;
+}
+
+/* ---------- Close button ---------- */
+
+.music-bar__close {
+  display: flex;
+  position: absolute;
+  right: 0;
+  top: 0;
+  padding: 0.5rem;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+/* ---------- Content wrapper ---------- */
+
+.music-bar__content {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ---------- Controls ---------- */
+
+.music-bar__controls {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.music-bar__button {
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ---------- Play/Pause button ---------- */
+
+.music-bar__button--toggle {
+  width: 56px;
+  height: 56px;
+  background: #ffcc00;
+  border-radius: 50%;
+}
+
+body.playing .music-bar__icon--play {
+  display: none;
+}
+
+body:not(.playing) .music-bar__icon--play {
+  display: flex;
+  margin-left: 2px;
+}
+
+body:not(.playing) .music-bar__icon--pause {
+  display: none;
+}
+
+body.playing .music-bar__icon--pause {
+  display: flex;
+}
+
+/* ---------- Next and Previous ---------- */
+
+.music-bar__button--next,
+.music-bar__button--prev {
+  padding: 0.75rem;
+}
+
+/* ---------- Track info ---------- */
+
+.music-bar__info {
+  padding: 0 1rem;
+  flex: 1;
+  min-width: 200px;
+}
+
+.music-bar__track {
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+}
+
+.music-bar__category {
+  opacity: 0.7;
+  font-size: 0.875rem;
+}
+
+/* ---------- Progress ---------- */
+
+.music-bar__progress {
+  display: flex;
+  align-items: center;
+  flex: 2;
+  gap: 0.75rem;
+  min-width: 200px;
+  color: #fff;
+  padding-right: 1rem;
+}
+
+@media (min-width: 1024px) {
+  .music-bar__progress {
+    padding-right: 2rem;
+  }
+}
+
+.music-bar__time {
+  font-size: 0.875rem;
+}
+
+.music-bar__timeline {
+  flex: 1;
+  height: 4px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.music-bar__timeline-bg {
+  width: 100%;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  position: relative;
+}
+
+.music-bar__timeline-fill {
+  background: #fff;
+  height: 4px;
+  border-radius: 2px;
+  position: relative;
+}
+
+.music-bar__timeline-handle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: box-shadow 0.2s ease;
+}
+
+.music-bar__timeline-handle:hover {
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/* ---------- Volume ---------- */
+
+.music-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+
+.music-bar__volume {
+  display: none;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+@media (min-width: 1024px) {
+  .music-bar__volume {
+    display: flex;
+  }
+}
+
+.music-bar__volume-track {
+  width: 100px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.25);
+  border-radius: 2px;
+  position: relative;
+  cursor: pointer;
+}
+
+.music-bar__volume-fill {
+  background: #fff;
+  height: 4px;
+  border-radius: 2px;
+  position: relative;
+}
+
+.music-bar__volume-handle {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  width: 10px;
+  height: 10px;
+  background: #fff;
+  border-radius: 50%;
+  transform: translateY(-50%);
+  transition: box-shadow 0.2s ease;
+}
+
+.music-bar__volume-handle:hover {
+  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
+}
+
+.music-bar__volume-btn {
+  display: flex;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  transition: opacity 0.2s ease;
+}
+
+/* ---------- Download ---------- */
+
+.music-bar__download {
+  background: #111;
+  color: #fff;
+  border-radius: 9999px;
+  padding: 0.5rem 1.25rem;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+  cursor: pointer;
+}
+
+.music-bar__download-label {
+  display: none;
+}
+
+@media (min-width: 1024px) {
+  .music-bar__download-label {
+    display: flex;
+  }
+}
+
+.music-bar__download svg {
+  width: 16px;
+  height: 16px;
+}
+
+.music-bar__download.downloading .music-bar__icon--download {
+  display: none;
+}
+
+.music-bar__download:not(.downloading) .music-bar__icon--download {
+  display: flex;
+}
+
+.music-bar__download.downloading .music-bar__icon--loading {
+  display: flex;
+  animation: music-bar-rotate 1s linear infinite;
+}
+
+.music-bar__download:not(.downloading) .music-bar__icon--loading {
+  display: none;
+}
+
+/* ---------- Separator ---------- */
+.music-bar__separator {
+  flex-basis: 100%;
+  display: block;
+}
+
+@media (min-width: 1024px) {
+  .music-bar__separator {
+    display: none;
+  }
 }
