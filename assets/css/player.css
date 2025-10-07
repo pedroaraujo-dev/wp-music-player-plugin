@@ -94,21 +94,8 @@
 
 /* Ícone Play/Pause */
 
-.music-player__item:not(.playing) .music-player__button .music-player__icon--play {
-  display: flex;
-}
-
-.music-player__item.playing .music-player__button .music-player__icon--pause {
-  display: flex;
-}
-
-.music-player__button .music-player__icon--play,
-.music-player__button .music-player__icon--pause {
-  display: none;
-}
-
-.music-player__button .music-player__icon--play svg,
-.music-player__button .music-player__icon--pause svg {
+.music-player__button.music-player__button--play svg,
+.music-player__button.music-player__button--pause svg {
   width: 20px;
   height: 20px;
 }
@@ -147,30 +134,12 @@
   transition: opacity 0.2s ease;
 }
 
-/* ---------- ESTADO DE DOWNLOAD (downloading) ---------- */
+/* ---------- ESTADO DE LOADING ---------- */
 
-.music-player__download.downloading {
-  pointer-events: none;
-}
-
-.music-player__download:not(.downloading) .music-player__icon--download {
-  display: flex;
-}
-
-.music-player__download.downloading .music-player__icon--download {
-  display: none;
-}
-
-.music-player__download.downloading .music-player__icon--loading {
-  display: flex;
+.music-player__loading {
   animation: music-player-rotate 1s linear infinite;
 }
 
-.music-player__download:not(.downloading) .music-player__icon--loading {
-  display: none;
-}
-
-/* Animação de rotação para o ícone de carregamento */
 @keyframes music-player-rotate {
   from {
     transform: rotate(0deg);

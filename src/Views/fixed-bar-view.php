@@ -20,24 +20,24 @@
         ?>
       </button>
 
-      <button aria-label="Play/Pause" class="music-bar__button music-bar__button--toggle">
-        <span class="music-bar__icon--play">
-            <?php
-                $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/play.svg';
-                if (file_exists($icon_path)) {
-                    echo file_get_contents($icon_path);
-                }
-            ?>
-        </span>
+      <button aria-label="Play/Pause" class="music-bar__button music-bar__button--play">
+        <div style="display: flex; align-items: center; justify-content: center; margin-left: 2px;">
+          <?php
+              $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/play.svg';
+              if (file_exists($icon_path)) {
+                  echo file_get_contents($icon_path);
+              }
+          ?>
+        </div>
+      </button>
 
-        <span class="music-bar__icon--pause">
-            <?php
-                $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/pause.svg';
-                if (file_exists($icon_path)) {
-                    echo file_get_contents($icon_path);
-                }
-            ?>
-        </span>
+      <button aria-label="Play/Pause" class="music-bar__button music-bar__button--pause" style="display: none;">
+        <?php
+            $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/pause.svg';
+            if (file_exists($icon_path)) {
+                echo file_get_contents($icon_path);
+            }
+        ?>
       </button>
 
       <button aria-label="Próximo" class="music-bar__button music-bar__button--next">
@@ -51,14 +51,14 @@
     </div>
 
     <div class="music-bar__info">
-      <div class="music-bar__track">Martins</div>
-      <div class="music-bar__category">Vozes Masculinas</div>
+      <div class="music-bar__track"></div>
+      <div class="music-bar__category"></div>
     </div>
 
     <div class="music-bar__separator"></div>
 
     <div class="music-bar__progress">
-      <div class="music-bar__time">0:00</div>
+      <div class="music-bar__time music-bar__time--current">0:00</div>
       <div class="music-bar__timeline">
         <div class="music-bar__timeline-bg">
           <div class="music-bar__timeline-fill" style="width: 0.448737%;">
@@ -66,7 +66,7 @@
           </div>
         </div>
       </div>
-      <div class="music-bar__time">1:29</div>
+      <div class="music-bar__time music-bar__time--total">0:00</div>
     </div>
 
     <div class="music-bar__actions">
@@ -111,6 +111,4 @@
       </a>
     </div>
   </div>
-
-  <audio class="music-bar__audio" src="https://firebasestorage.googleapis.com/v0/b/dashboard-glc.appspot.com/o/mdv_bdv_masculinas%2FMartins.mp3_4B5lyUB48mKRkdOB3Who.mp3?alt=media&token=f6083115-4feb-422b-b1e3-b9eb3a8c7387"></audio>
 </div>

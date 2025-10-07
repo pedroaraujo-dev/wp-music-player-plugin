@@ -16,7 +16,7 @@ class PlayerShortcode
             'title' => ''
         ], $atts, 'music_player');
 
-        $site = esc_url($atts['site']);
+        $site = sanitize_text_field($atts['site']);
         $playlist = sanitize_text_field($atts['playlist']);
         $title = sanitize_text_field($atts['title']);
 

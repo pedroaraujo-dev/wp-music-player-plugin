@@ -55,28 +55,12 @@
 
 /* ---------- Play/Pause button ---------- */
 
-.music-bar__button--toggle {
+.music-bar__button--play,
+.music-bar__button--pause {
   width: 56px;
   height: 56px;
   background: #ffcc00;
   border-radius: 50%;
-}
-
-body.playing .music-bar__icon--play {
-  display: none;
-}
-
-body:not(.playing) .music-bar__icon--play {
-  display: flex;
-  margin-left: 2px;
-}
-
-body:not(.playing) .music-bar__icon--pause {
-  display: none;
-}
-
-body.playing .music-bar__icon--pause {
-  display: flex;
 }
 
 /* ---------- Next and Previous ---------- */

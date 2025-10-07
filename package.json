@@ -1,0 +1,10 @@
+{
+  "scripts": {
+    "serve": "tsc --watch",
+    "build": "tsc && npx terser dist/main.js -o dist/main.min.js"
+  },
+  "devDependencies": {
+    "terser": "^5.44.0",
+    "typescript": "^5.6.3"
+  }
+}
