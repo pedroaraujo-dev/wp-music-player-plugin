@@ -1,0 +1,123 @@
+import { Audio } from "../../ui/audio.js";
+let isUserInteracting = false;
+export function handleProgressClick(event, progressWrapper) {
+    if (isUserInteracting)
+        return;
+    updateProgressFromEvent(event, progressWrapper, true);
+}
+export function handleProgressMouseDown(event, progressWrapper) {
+    const rect = progressWrapper.getBoundingClientRect();
+    const progressBar = progressWrapper.querySelector(".music-bar__timeline-fill");
+    const currentTimeDisplay = progressWrapper.querySelector(".music-bar__time--current");
+    const totalTimeDisplay = progressWrapper.querySelector(".music-bar__time--total");
+    const duration = Audio.getDuration();
+    let percentage = 0;
+    let isFramePending = false;
+    isUserInteracting = true;
+    function updateProgress(clientX) {
+        const mouseX = clientX - rect.left;
+        const width = rect.width;
+        percentage = Math.max(0, Math.min(1, mouseX / width));
+        if (progressBar) {
+            progressBar.style.setProperty("--width", `${percentage * 100}%`);
+        }
+        if (duration > 0) {
+            const previewTime = duration * percentage;
+            if (currentTimeDisplay)
+                currentTimeDisplay.textContent = formatTime(previewTime);
+            if (totalTimeDisplay)
+                totalTimeDisplay.textContent = formatTime(duration);
+        }
+    }
+    function onMouseMove(e) {
+        if (isFramePending)
+            return;
+        isFramePending = true;
+        requestAnimationFrame(() => {
+            updateProgress(e.clientX);
+            isFramePending = false;
+        });
+    }
+    function onMouseUp(e) {
+        document.removeEventListener("mousemove", onMouseMove);
+        document.removeEventListener("mouseup", onMouseUp);
+        updateProgress(e.clientX);
+        const newTime = duration * percentage;
+        Audio.setCurrentTime(newTime);
+        isUserInteracting = false;
+    }
+    document.addEventListener("mousemove", onMouseMove);
+    document.addEventListener("mouseup", onMouseUp);
+    updateProgress(event.clientX);
+}
+function updateProgressFromEvent(event, progressWrapper, setAudioTime = false) {
+    const rect = progressWrapper.getBoundingClientRect();
+    const clickedX = event.clientX - rect.left;
+    const width = rect.width;
+    const percentage = Math.max(0, Math.min(1, clickedX / width));
+    const progressBar = progressWrapper.querySelector(".music-bar__timeline-fill");
+    if (progressBar) {
+        progressBar.style.setProperty("--width", `${percentage * 100}%`);
+    }
+    const duration = Audio.getDuration();
+    if (duration > 0) {
+        const newTime = duration * percentage;
+        const currentTimeDisplay = progressWrapper.querySelector(".music-bar__time--current");
+        const totalTimeDisplay = progressWrapper.querySelector(".music-bar__time--total");
+        if (setAudioTime)
+            Audio.setCurrentTime(newTime);
+        if (currentTimeDisplay)
+            currentTimeDisplay.textContent = formatTime(newTime);
+        if (totalTimeDisplay)
+            totalTimeDisplay.textContent = formatTime(duration);
+    }
+}
+export function handleAudioProgress() {
+    const progressWrapper = document.querySelector(".music-bar__timeline");
+    const audioElement = document.querySelector("#audio-player");
+    if (!audioElement || !progressWrapper)
+        return;
+    const progressBar = document.querySelector(".music-bar__timeline-fill");
+    const currentTimeDisplay = document.querySelector(".music-bar__time--current");
+    const totalTimeDisplay = document.querySelector(".music-bar__time--total");
+    if (!progressBar || !currentTimeDisplay || !totalTimeDisplay)
+        return;
+    audioElement.addEventListener("loadedmetadata", () => {
+        const duration = audioElement.duration;
+        if (!isNaN(duration)) {
+            totalTimeDisplay.textContent = formatTime(duration);
+        }
+    });
+    function updateProgressBar() {
+        if (isUserInteracting) {
+            requestAnimationFrame(updateProgressBar);
+            return;
+        }
+        if (!audioElement || audioElement.paused || audioElement.ended) {
+            requestAnimationFrame(updateProgressBar);
+            return;
+        }
+        const currentTime = audioElement.currentTime;
+        const duration = audioElement.duration;
+        if (!isNaN(duration) && duration > 0) {
+            const progressPercent = currentTime / duration;
+            if (!progressBar || !currentTimeDisplay)
+                return;
+            progressBar.style.setProperty("--width", `${progressPercent * 100}%`);
+            currentTimeDisplay.textContent = formatTime(currentTime);
+        }
+        requestAnimationFrame(updateProgressBar);
+    }
+    audioElement.addEventListener("play", () => {
+        requestAnimationFrame(updateProgressBar);
+    });
+    audioElement.addEventListener("ended", () => {
+        progressBar.style.setProperty("--width", "0%");
+        currentTimeDisplay.textContent = "0:00";
+    });
+}
+function formatTime(time) {
+    const minutes = Math.floor(time / 60);
+    const seconds = Math.floor(time % 60);
+    return `${minutes}:${seconds.toString().padStart(2, "0")}`;
+}
