@@ -1,4 +1,4 @@
-<div class="music-bar">
+<div class="music-bar music-bar--hidden">
   <button aria-label="Fechar" class="music-bar__close">
     <?php
         $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/times.svg';
@@ -61,9 +61,7 @@
       <div class="music-bar__time music-bar__time--current">0:00</div>
       <div class="music-bar__timeline">
         <div class="music-bar__timeline-bg">
-          <div class="music-bar__timeline-fill" style="width: 0.448737%;">
-            <div class="music-bar__timeline-handle"></div>
-          </div>
+          <div class="music-bar__timeline-fill" style="--width: 0%;"></div>
         </div>
       </div>
       <div class="music-bar__time music-bar__time--total">0:00</div>
@@ -72,13 +70,20 @@
     <div class="music-bar__actions">
       <div class="music-bar__volume">
         <div class="music-bar__volume-track">
-          <div class="music-bar__volume-fill" style="width: 100%;">
-            <div class="music-bar__volume-handle"></div>
-          </div>
+          <div class="music-bar__volume-fill" style="--width: 100%;"></div>
         </div>
-        <button aria-label="Silenciar" class="music-bar__volume-btn">
+        <button aria-label="Silenciar" class="music-bar__volume-btn music-bar__volume-btn--mute">
           <?php
               $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/volume.svg';
+              if (file_exists($icon_path)) {
+                  echo file_get_contents($icon_path);
+              }
+          ?>
+        </button>
+
+        <button aria-label="" class="music-bar__volume-btn music-bar__volume-btn--unmute" style="display: none;">
+          <?php
+              $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/mute.svg';
               if (file_exists($icon_path)) {
                   echo file_get_contents($icon_path);
               }
@@ -100,7 +105,7 @@
             ?>
         </span>
 
-        <span class="music-bar__icon--loading">
+        <span class="music-bar__icon--loading" style="display: none;">
             <?php
                 $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/loading.svg';
                 if (file_exists($icon_path)) {
@@ -112,3 +117,5 @@
     </div>
   </div>
 </div>
+
+<audio id="audio-player" style="display: none;"></audio>

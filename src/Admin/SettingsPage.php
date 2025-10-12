@@ -24,10 +24,10 @@ class SettingsPage
          * ------------------------- */
 
         $playerFields = [
-            'playlist_title_color' => 'Cor do título da Playlist',
-            'playlist_bg_color' => 'Cor de fundo da Playlist',
-            'audio_text_color' => 'Cor dos textos do áudio na Playlist',
-            'audio_bg_color' => 'Cor de fundo do áudio na Playlist',
+            'playlist_title_color' => 'Cor do título da IPlaylist',
+            'playlist_bg_color' => 'Cor de fundo da IPlaylist',
+            'audio_text_color' => 'Cor dos textos do áudio na IPlaylist',
+            'audio_bg_color' => 'Cor de fundo do áudio na IPlaylist',
             'button_icon_color' => 'Cor do ícone de Play/Pause',
             'button_bg_color' => 'Cor do botão de Play/Pause',
             'download_icon_color' => 'Cor do botão de Download',

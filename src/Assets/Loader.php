@@ -30,9 +30,9 @@ class Loader
             return;
         }
 
-        $base_css = plugin_dir_url(__FILE__) . '../../assets/css/';
+        $base_css = plugin_dir_url(__FILE__) . '../../assets/styles/';
         $base_js  = plugin_dir_url(__FILE__) . '../../dist/';
-        $path_css = plugin_dir_path(__FILE__) . '../../assets/css/';
+        $path_css = plugin_dir_path(__FILE__) . '../../assets/styles/';
         $path_js  = plugin_dir_path(__FILE__) . '../../dist/';
 
         $player_css = $path_css . 'player.css';

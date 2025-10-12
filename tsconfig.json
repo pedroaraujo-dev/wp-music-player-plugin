@@ -3,14 +3,13 @@
     "target": "ES2020",
     "module": "ES2020",
     "moduleResolution": "bundler",
-    "rootDir": "assets/js",
+    "rootDir": "assets/scripts",
     "outDir": "dist",
     "strict": true,
     "esModuleInterop": true,
     "allowImportingTsExtensions": false,
-    
     "noEmitOnError": true
   },
-  "include": ["assets/js/**/*.ts"],
+  "include": ["assets/scripts/**/*.ts"],
   "exclude": ["dist"]
 }

@@ -1,6 +1,6 @@
 <?php
 /**
- * View: Playlist Item
+ * View: IPlaylist Item
  *
  * Variáveis disponíveis:
  * @var array $audio
@@ -23,14 +23,15 @@ $url      = esc_url($audio['url'] ?? '#');
 <div 
     class="music-player__item" 
     data-index="<?php echo esc_attr($index); ?>"
+    data-id="<?php echo esc_attr($audio['id'] ?? ''); ?>"
     style="background-color: <?php echo esc_attr($audio_bg_color); ?>; color: <?php echo esc_attr($audio_text_color); ?>;"
+    data-url="<?php echo $url; ?>"
 >
     <div class="music-player__item-left">
         <button 
             class="music-player__button music-player__button--play"
             style="background-color: <?php echo esc_attr($button_bg_color); ?>; color: <?php echo esc_attr($button_icon_color); ?>;"
-            aria-label="Play/Pause"
-            data-url="<?php echo $url; ?>"
+            aria-label="Play áudio"
         >
             <?php
                 $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/play.svg';
@@ -43,8 +44,7 @@ $url      = esc_url($audio['url'] ?? '#');
         <button 
             class="music-player__button music-player__button--pause"
             style="background-color: <?php echo esc_attr($button_bg_color); ?>; color: <?php echo esc_attr($button_icon_color); ?>; display: none;"
-            aria-label="Play/Pause"
-            data-url="<?php echo $url; ?>"
+            aria-label="Pause áudio"
         >
             <?php
                 $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/pause.svg';

@@ -1,11 +1,19 @@
-import type { AudioItem } from '../interfaces/audioItem.js';
+export interface IAudioItem {
+  id: string;
+  name: string;
+  category: string;
+  duration: string;
+  url: string;
+  tags: string[];
+  metadata: Record<string, any>;
+}
 
 function parseDuration(duration: string): number {
   const [min, sec] = duration.split(':').map(Number);
   return (min || 0) * 60 + (sec || 0);
 }
 
-export function adaptAudioResponse(raw: any[]): AudioItem[] {
+export function adaptAudioResponse(raw: any[]): IAudioItem[] {
   return raw.map((item) => {
     const metadataKeys = Object.keys(item).filter(
       (key) =>

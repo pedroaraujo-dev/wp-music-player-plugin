@@ -11,6 +11,13 @@
   background: linear-gradient(to right, #f77f00, #fcbf49);
   color: #fff;
   padding: 0.5rem 1rem;
+  transform: translate(0, 0);
+  transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+.music-bar.music-bar--hidden {
+  transform: translateY(100%);
+  pointer-events: none;
 }
 
 /* ---------- Close button ---------- */
@@ -133,11 +140,13 @@
   height: 4px;
   border-radius: 2px;
   position: relative;
+  width: var(--width, 0%);
 }
 
-.music-bar__timeline-handle {
+.music-bar__timeline-fill:after {
+  content: "";
   position: absolute;
-  right: 0;
+  left: 100%;
   top: 50%;
   width: 12px;
   height: 12px;
@@ -147,8 +156,14 @@
   transition: box-shadow 0.2s ease;
 }
 
-.music-bar__timeline-handle:hover {
+.music-bar__timeline-fill:after:hover {
   box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+/*  */
+.music-bar__time--current {
+  width: 40px;
+  text-align: right;
 }
 
 /* ---------- Volume ---------- */
@@ -163,7 +178,7 @@
 .music-bar__volume {
   display: none;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.75rem;
 }
 
 @media (min-width: 1024px) {
@@ -186,22 +201,24 @@
   height: 4px;
   border-radius: 2px;
   position: relative;
+  width: var(--width, 100%);
 }
 
-.music-bar__volume-handle {
+.music-bar__volume-fill:after {
+  content: "";
   position: absolute;
-  right: 0;
+  left: 100%;
   top: 50%;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   background: #fff;
   border-radius: 50%;
   transform: translateY(-50%);
   transition: box-shadow 0.2s ease;
 }
 
-.music-bar__volume-handle:hover {
-  box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.2);
+.music-bar__volume-fill:after:hover {
+  box-shadow: 0 0 0 8px rgba(255, 255, 255, 0.2);
 }
 
 .music-bar__volume-btn {
@@ -245,21 +262,21 @@
   height: 16px;
 }
 
-.music-bar__download.downloading .music-bar__icon--download {
-  display: none;
-}
-
-.music-bar__download:not(.downloading) .music-bar__icon--download {
+.music-bar__download .music-bar__icon--download {
   display: flex;
 }
 
-.music-bar__download.downloading .music-bar__icon--loading {
-  display: flex;
+.music-bar__download .music-bar__icon--loading {
   animation: music-bar-rotate 1s linear infinite;
 }
 
-.music-bar__download:not(.downloading) .music-bar__icon--loading {
-  display: none;
+@keyframes music-bar-rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* ---------- Separator ---------- */
