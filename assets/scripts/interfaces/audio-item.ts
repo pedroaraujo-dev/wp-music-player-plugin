@@ -41,3 +41,11 @@ export function adaptAudioResponse(raw: any[]): IAudioItem[] {
     };
   });
 }
+
+export function sortAudiosBySite(audios: IAudioItem[], site: string): IAudioItem[] {
+  return [...audios].sort((a, b) => {
+    const orderA = a.metadata?.[site]?.order ?? 0;
+    const orderB = b.metadata?.[site]?.order ?? 0;
+    return orderB - orderA;
+  });
+}

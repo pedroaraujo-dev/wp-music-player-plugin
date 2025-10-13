@@ -26,3 +26,10 @@ export function adaptAudioResponse(raw) {
         };
     });
 }
+export function sortAudiosBySite(audios, site) {
+    return [...audios].sort((a, b) => {
+        const orderA = a.metadata?.[site]?.order ?? 0;
+        const orderB = b.metadata?.[site]?.order ?? 0;
+        return orderB - orderA;
+    });
+}

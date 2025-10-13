@@ -1,16 +1,19 @@
 import { updateAudios, playerState, updatePlaylistAudios } from '../states/player-state.js';
-import { adaptAudioResponse } from '../interfaces/audio-item.js';
+import { adaptAudioResponse, sortAudiosBySite } from '../interfaces/audio-item.js';
 export class AudioService {
     static async fetchAudios() {
         const playlists = playerState.playlists;
         const results = await Promise.all(playlists.map(async (data) => {
-            const res = await fetch(`http://localhost/player/wp-content/plugins/music-player/bdv.json?site=${data.site}&playlist=${data.key}`);
+            const res = await fetch(`https://conceitovoz.com.br/playlist-directory/get-content.php?site=${data.site}&playlist=${data.key}`, {
+                headers: { 'Name': data.key }
+            });
             if (!res.ok)
                 throw new Error(`Erro ao carregar playlist ${data.key}`);
             const raw = await res.json();
             const audios = adaptAudioResponse(raw);
-            updatePlaylistAudios(data.key, audios);
-            return { ...data, audios, rendered: false };
+            const sortedAudios = sortAudiosBySite(audios, data.site);
+            updatePlaylistAudios(data.key, sortedAudios);
+            return { ...data, sortedAudios, rendered: false };
         }));
         const allAudios = results.flatMap((r) => r.audios);
         updateAudios(allAudios);

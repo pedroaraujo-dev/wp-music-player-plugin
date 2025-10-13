@@ -36,12 +36,21 @@ class Loader
         $path_js  = plugin_dir_path(__FILE__) . '../../dist/';
 
         $player_css = $path_css . 'player.css';
+        $sound_bank_css = $path_css . 'sound-bank.css';
         $fixed_css  = $path_css . 'fixed-bar.css';
         $player_js  = $path_js . 'main.js';
 
          wp_enqueue_style(
             'music-player-style',
             $base_css . 'player.css',
+            [],
+            filemtime($player_css),
+            'all'
+        );
+
+        wp_enqueue_style(
+            'music-player-sound-bank-style',
+            $base_css . 'sound-bank.css',
             [],
             filemtime($player_css),
             'all'
