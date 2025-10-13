@@ -1,6 +1,6 @@
 import { playerState } from "../../states/player-state.js";
-import { FixedBar } from "../../ui/fixed-bar.js";
-import { PlaylistItem } from "../../ui/playlist-item.js";
+import { FixedBarUI } from "../../ui/fixed-bar.js";
+import { PlaylistItemUI } from "../../ui/playlist-item.js";
 export async function handleItemDownload(musicPlayerItemId) {
     if (!musicPlayerItemId) {
         return;
@@ -12,7 +12,7 @@ export async function handleItemDownload(musicPlayerItemId) {
     if (!downloadUrl)
         return;
     try {
-        PlaylistItem.startDownload(musicPlayerItemId);
+        PlaylistItemUI.startDownload(musicPlayerItemId);
         const response = await fetch(downloadUrl);
         const blob = await response.blob();
         const url = URL.createObjectURL(blob);
@@ -28,14 +28,14 @@ export async function handleItemDownload(musicPlayerItemId) {
         console.error('Download failed', error);
     }
     finally {
-        PlaylistItem.endDownload(musicPlayerItemId);
-        FixedBar.endDownload();
+        PlaylistItemUI.endDownload(musicPlayerItemId);
+        FixedBarUI.endDownload();
     }
 }
 export function handleBarDownload() {
     const currentlyPlayingId = playerState.currentlyPlayingId;
     if (!currentlyPlayingId)
         return;
-    FixedBar.startDownload();
+    FixedBarUI.startDownload();
     handleItemDownload(currentlyPlayingId);
 }

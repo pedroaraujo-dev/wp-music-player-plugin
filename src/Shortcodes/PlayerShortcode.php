@@ -11,12 +11,11 @@ class PlayerShortcode
     public static function render($atts = [], $content = null)
     {
         $atts = shortcode_atts([
-            'site' => '',
             'playlist' => '',
             'title' => ''
         ], $atts, 'music_player');
 
-        $site = sanitize_text_field($atts['site']);
+        $site = get_option('music_player_site_id', '');
         $playlist = sanitize_text_field($atts['playlist']);
         $title = sanitize_text_field($atts['title']);
 

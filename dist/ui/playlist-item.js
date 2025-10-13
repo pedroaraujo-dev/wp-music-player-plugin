@@ -1,4 +1,4 @@
-export class PlaylistItem {
+export class PlaylistItemUI {
     static getCurrentPlayingId() {
         const playingItem = document.querySelector('.music-player__item.playing');
         return playingItem ? playingItem.getAttribute('data-id') : null;

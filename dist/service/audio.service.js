@@ -1,5 +1,5 @@
 import { updateAudios, playerState, updatePlaylistAudios } from '../states/player-state.js';
-import { adaptAudioResponse } from '../interfaces/audioItem.js';
+import { adaptAudioResponse } from '../interfaces/audio-item.js';
 export class AudioService {
     static async fetchAudios() {
         const playlists = playerState.playlists;

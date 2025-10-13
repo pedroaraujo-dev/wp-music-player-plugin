@@ -1,6 +1,6 @@
-import { IAudioItem } from "../interfaces/audioItem";
+import { IAudioItem } from "../interfaces/audio-item";
 
-export class FixedBar {
+export class FixedBarUI {
     static play(): void {
         const fixedBar = document.querySelector('.music-bar');
         if (!fixedBar) return;

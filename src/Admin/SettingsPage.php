@@ -20,6 +20,30 @@ class SettingsPage
     public static function registerSettings()
     {
         /* -------------------------
+         *  SEÇÃO: CONFIGURAÇÕES GERAIS
+         * ------------------------- */
+
+        add_settings_section(
+            'music_player_general_section',
+            '⚙️ Configurações Gerais',
+            function () {
+                echo '<p>Configurações gerais do plugin Music Player.</p>';
+            },
+            'music-player-settings'
+        );
+
+        register_setting('music_player_settings', 'music_player_site_id');
+
+        add_settings_field(
+            'music_player_site_id',
+            'Site ID',
+            [self::class, 'renderTextField'],
+            'music-player-settings',
+            'music_player_general_section',
+            ['id' => 'music_player_site_id']
+        );
+
+        /* -------------------------
          *  SEÇÃO: PLAYER SETTINGS
          * ------------------------- */
 
@@ -38,6 +62,7 @@ class SettingsPage
             '🎵 Personalização do Player',
             function () {
                 echo '<p>Defina as cores para o player de música e sua playlist.</p>';
+                echo '<p class="description">Aceita formatos: rgba() ou #rrggbbaa.</p>';
             },
             'music-player-settings'
         );
@@ -69,6 +94,7 @@ class SettingsPage
             '📊 Personalização da Fixed Bar',
             function () {
                 echo '<p>Defina as cores da barra fixa global do player.</p>';
+                echo '<p class="description">Aceita formatos: rgba() ou #rrggbbaa.</p>';
             },
             'music-player-settings'
         );
@@ -84,6 +110,30 @@ class SettingsPage
                 ['id' => $key]
             );
         }
+
+        /* -------------------------
+         *  SEÇÃO: BANCO DE TRILHAS
+         * ------------------------- */
+
+        add_settings_section(
+            'music_player_soundbanks_section',
+            '🎧 Banco de Trilhas',
+            function () {
+                echo '<p>Configure o banco de trilhas em formato JSON.</p>';
+            },
+            'music-player-settings'
+        );
+
+        register_setting('music_player_settings', 'sound_banks_data');
+
+        add_settings_field(
+            'sound_banks_data',
+            'Banco de Trilhas (JSON)',
+            [self::class, 'renderTextAreaField'],
+            'music-player-settings',
+            'music_player_soundbanks_section',
+            ['id' => 'sound_banks_data']
+        );
     }
 
     public static function renderColorField($args)
@@ -101,12 +151,43 @@ class SettingsPage
                 placeholder='rgba(255, 255, 255, 0.8)' 
                 style='width: 160px;'
             />
-            <p class='description'>Aceita formatos: rgba() ou #rrggbbaa.</p>
         ";
     }
 
     public static function renderPage()
     {
         include plugin_dir_path(__FILE__) . '/../Views/admin-settings-view.php';
+    }
+
+    public static function renderTextAreaField($args)
+    {
+        $id = $args['id'];
+        $value = get_option($id, '');
+        echo "
+            <textarea 
+                id='{$id}' 
+                name='{$id}' 
+                rows='8' 
+                cols='60'
+                placeholder='[{\"id\":\"rock\",\"name\":\"Rock\",\"icon\":\"rock.svg\"}]'
+            >{$value}</textarea>
+            <p class='description'>Insira os dados em formato JSON válido.</p>
+        ";
+    }
+
+    public static function renderTextField($args)
+    {
+        $id = $args['id'];
+        $value = esc_attr(get_option($id, ''));
+        echo "
+            <input 
+                type='text' 
+                id='{$id}' 
+                name='{$id}' 
+                value='{$value}' 
+                placeholder='ex: site_12345' 
+                style='width: 300px;'
+            />
+        ";
     }
 }

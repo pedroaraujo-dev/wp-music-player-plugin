@@ -1,6 +1,6 @@
 import { handleBarNext } from "../controls/handlers/next.handle.js";
 
-export class Audio {
+export class AudioUI {
     static init() {
         const audio = document.querySelector('#audio-player') as HTMLAudioElement | null;
         if (!audio) return;

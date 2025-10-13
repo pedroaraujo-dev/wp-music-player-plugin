@@ -1,13 +1,13 @@
-import { Audio } from "../../ui/audio.js";
-import { Volume } from "../../ui/volume.js";
+import { AudioUI } from "../../ui/audio.js";
+import { VolumeUI } from "../../ui/volume.js";
 let isVolumeInteracting = false;
 export function handleVolumeMuteBtnClick() {
-    Audio.mute();
-    Volume.mute();
+    AudioUI.mute();
+    VolumeUI.mute();
 }
 export function handleVolumeUnmuteBtnClick() {
-    Audio.unmute();
-    Volume.unmute();
+    AudioUI.unmute();
+    VolumeUI.unmute();
 }
 export function handleVolumeClick(event, volumeWrapper) {
     if (isVolumeInteracting)
@@ -27,7 +27,7 @@ export function handleVolumeMouseDown(event, volumeWrapper) {
         if (volumeBar) {
             volumeBar.style.setProperty("--width", `${percentage * 100}%`);
         }
-        Audio.setVolume(percentage);
+        AudioUI.setVolume(percentage);
     }
     function onMouseMove(e) {
         if (isFramePending)
@@ -58,6 +58,6 @@ function updateVolumeFromEvent(event, volumeWrapper, setAudioVolume = false) {
         volumeBar.style.setProperty("--width", `${percentage * 100}%`);
     }
     if (setAudioVolume) {
-        Audio.setVolume(percentage);
+        AudioUI.setVolume(percentage);
     }
 }

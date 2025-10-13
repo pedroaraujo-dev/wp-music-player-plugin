@@ -1,6 +1,7 @@
 <?php
 $playlist_title_color = get_option('playlist_title_color', '#0d1b2a');
 $playlist_bg_color    = get_option('playlist_bg_color', '#f3f3f3');
+
 $audio_bg_color       = get_option('audio_bg_color', '#e0e1dd');
 $button_bg_color      = get_option('button_bg_color', '#f77f00');
 $button_icon_color    = get_option('button_icon_color', '#ffffff');

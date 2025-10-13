@@ -1,4 +1,4 @@
-import { IAudioItem } from "./audioItem.js";
+import { IAudioItem } from "./audio-item.js";
 
 export interface IPlaylist {
     audios: IAudioItem[];

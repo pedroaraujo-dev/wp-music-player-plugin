@@ -1,4 +1,4 @@
-export class Volume {
+export class VolumeUI {
     static mute() {
         const volumeMuteBtn = document.querySelector('.music-bar__volume-btn--mute');
         const volumeUnmuteBtn = document.querySelector('.music-bar__volume-btn--unmute');

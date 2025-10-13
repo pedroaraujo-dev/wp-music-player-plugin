@@ -1,4 +1,4 @@
-export class FixedBar {
+export class FixedBarUI {
     static play() {
         const fixedBar = document.querySelector('.music-bar');
         if (!fixedBar)

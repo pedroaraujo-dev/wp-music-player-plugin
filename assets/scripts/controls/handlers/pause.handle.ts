@@ -1,9 +1,9 @@
-import { Audio } from "../../ui/audio.js";
-import { FixedBar } from "../../ui/fixed-bar.js";
-import { PlaylistItem } from "../../ui/playlist-item.js";
+import { AudioUI } from "../../ui/audio.js";
+import { FixedBarUI } from "../../ui/fixed-bar.js";
+import { PlaylistItemUI } from "../../ui/playlist-item.js";
 
 export function handlePause() {
-  Audio.pause();
-  FixedBar.pause();
-  PlaylistItem.pauseAll();
+  AudioUI.pause();
+  FixedBarUI.pause();
+  PlaylistItemUI.pauseAll();
 }

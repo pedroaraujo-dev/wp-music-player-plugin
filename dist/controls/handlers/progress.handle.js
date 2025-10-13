@@ -1,4 +1,4 @@
-import { Audio } from "../../ui/audio.js";
+import { AudioUI } from "../../ui/audio.js";
 let isUserInteracting = false;
 export function handleProgressClick(event, progressWrapper) {
     if (isUserInteracting)
@@ -10,7 +10,7 @@ export function handleProgressMouseDown(event, progressWrapper) {
     const progressBar = progressWrapper.querySelector(".music-bar__timeline-fill");
     const currentTimeDisplay = progressWrapper.querySelector(".music-bar__time--current");
     const totalTimeDisplay = progressWrapper.querySelector(".music-bar__time--total");
-    const duration = Audio.getDuration();
+    const duration = AudioUI.getDuration();
     let percentage = 0;
     let isFramePending = false;
     isUserInteracting = true;
@@ -43,7 +43,7 @@ export function handleProgressMouseDown(event, progressWrapper) {
         document.removeEventListener("mouseup", onMouseUp);
         updateProgress(e.clientX);
         const newTime = duration * percentage;
-        Audio.setCurrentTime(newTime);
+        AudioUI.setCurrentTime(newTime);
         isUserInteracting = false;
     }
     document.addEventListener("mousemove", onMouseMove);
@@ -59,13 +59,13 @@ function updateProgressFromEvent(event, progressWrapper, setAudioTime = false) {
     if (progressBar) {
         progressBar.style.setProperty("--width", `${percentage * 100}%`);
     }
-    const duration = Audio.getDuration();
+    const duration = AudioUI.getDuration();
     if (duration > 0) {
         const newTime = duration * percentage;
         const currentTimeDisplay = progressWrapper.querySelector(".music-bar__time--current");
         const totalTimeDisplay = progressWrapper.querySelector(".music-bar__time--total");
         if (setAudioTime)
-            Audio.setCurrentTime(newTime);
+            AudioUI.setCurrentTime(newTime);
         if (currentTimeDisplay)
             currentTimeDisplay.textContent = formatTime(newTime);
         if (totalTimeDisplay)

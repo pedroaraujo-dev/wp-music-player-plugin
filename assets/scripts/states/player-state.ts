@@ -1,4 +1,4 @@
-import { IAudioItem } from "../interfaces/audioItem.js";
+import { IAudioItem } from "../interfaces/audio-item.js";
 import { IPlaylist } from "../interfaces/playlist.js";
 import { notifyPlaylistListeners } from "./player-listener.js";
 

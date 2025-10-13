@@ -1,6 +1,6 @@
 import { updateAudios, playerState, updatePlaylistAudios } from '../states/player-state.js';
 import { IPlaylist } from '../interfaces/playlist.js';
-import { adaptAudioResponse } from '../interfaces/audioItem.js';
+import { adaptAudioResponse } from '../interfaces/audio-item.js';
 
 export class AudioService {
   static async fetchAudios(): Promise<void> {
