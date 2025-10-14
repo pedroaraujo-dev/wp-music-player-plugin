@@ -2,8 +2,6 @@
 
 namespace MusicPlayer\Ajax;
 
-use MusicPlayer\Assets\Loader;
-
 class RenderPlayerHandler
 {
     public static function register(): void
@@ -17,8 +15,6 @@ class RenderPlayerHandler
         $playlist = sanitize_text_field($_POST['playlist'] ?? '');
         $title = sanitize_text_field($_POST['title'] ?? '');
         $site = get_option('music_player_site_id', '');
-
-        Loader::markPlayerPresent();
 
         ob_start();
         include plugin_dir_path(__FILE__) . '/../Views/player-view.php';

@@ -25,7 +25,6 @@ export async function handleItemDownload(musicPlayerItemId) {
         URL.revokeObjectURL(url);
     }
     catch (error) {
-        console.error('Download failed', error);
     }
     finally {
         PlaylistItemUI.endDownload(musicPlayerItemId);

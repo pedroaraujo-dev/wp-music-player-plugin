@@ -9,19 +9,24 @@ export class AudioService {
   
     const results: IPlaylist[] = await Promise.all(
       playlists.map(async (data) => {
-        const res = await fetch(
-          `https://conceitovoz.com.br/playlist-directory/get-content.php?site=${data.site}&playlist=${data.key}`, {
-            headers: { 'Name': data.key}
-          }
-        );
-  
-        if (!res.ok) throw new Error(`Erro ao carregar playlist ${data.key}`);
-  
-        const raw: any[] = await res.json();
-        const audios = adaptAudioResponse(raw);
-        const sortedAudios = sortAudiosBySite(audios, data.site);
-        updatePlaylistAudios(data.key, sortedAudios);
-        return { ...data, sortedAudios, rendered: false };
+        try {
+          const res = await fetch(
+            `https://conceitovoz.com.br/playlist-directory/get-content.php?site=${data.site}&playlist=${data.key}`, {
+              headers: { 'Name': data.key}
+            }
+          );
+          
+          if (!res.ok) return { ...data, audios: [], rendered: false };
+    
+          const raw: any[] = await res.json();
+          const audios = adaptAudioResponse(raw);
+          const sortedAudios = sortAudiosBySite(audios, data.site);
+          updatePlaylistAudios(data.key, sortedAudios);
+          return { ...data, sortedAudios, rendered: false };
+        } catch (error) {
+          console.error((error as Error).message);
+          return { ...data, audios: [], rendered: false };
+        }
       })
     );
   

@@ -4,9 +4,6 @@ namespace MusicPlayer\Assets;
 
 class Loader
 {
-    private static bool $styleEnqueued = false;
-    private static bool $playerDetected = false;
-
     public static function init()
     {
         add_action('wp_enqueue_scripts', [self::class, 'enqueueFrontendAssets']);
@@ -14,22 +11,10 @@ class Loader
     }
 
     /**
-     * Chamado pelo shortcode para registrar que há um player na página.
-     */
-    public static function markPlayerPresent(): void
-    {
-        self::$playerDetected = true;
-    }
-
-    /**
      * Carrega os assets apenas se houver player.
      */
     public static function enqueueFrontendAssets(): void
     {
-        if (!self::$playerDetected || self::$styleEnqueued) {
-            return;
-        }
-
         $base_css = plugin_dir_url(__FILE__) . '../../assets/styles/';
         $base_js  = plugin_dir_url(__FILE__) . '../../dist/';
         $path_css = plugin_dir_path(__FILE__) . '../../assets/styles/';
@@ -88,8 +73,6 @@ class Loader
                 'nonce'   => wp_create_nonce('music_player_nonce'),
             ]
         );
-
-        self::$styleEnqueued = true;
     }
 
     /**
@@ -97,10 +80,6 @@ class Loader
      */
     public static function renderFixedBar(): void
     {
-        if (!self::$playerDetected) {
-            return;
-        }
-
         include plugin_dir_path(__FILE__) . '/../Views/fixed-bar-view.php';
     }
 }

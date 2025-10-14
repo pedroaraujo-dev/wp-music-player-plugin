@@ -4,7 +4,7 @@ import { handleBarNext } from "../handlers/next.handle.js";
 import { handlePause } from "../handlers/pause.handle.js";
 import { handleBarPlay, handleItemPlay } from "../handlers/play.handle.js";
 import { handleBarPrev } from "../handlers/prev.handle.js";
-export function bindPlayerControlsUIEvents() {
+export function bindPlayerControlsUIListeners() {
     document.addEventListener('click', (event) => {
         const musicPlayButton = event.target?.closest('.music-player__button--play');
         const musicPauseButton = event.target?.closest('.music-player__button--pause');

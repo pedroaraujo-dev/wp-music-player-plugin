@@ -11,14 +11,13 @@ export async function handleSoundBankButtonClick(soundBankId, soundBankTitle) {
     const content = document.querySelector(`[data-playlist="${soundBankId}"]`);
     if (!content) {
         await fetchPlayer(soundBankId, soundBankTitle);
-        EventBus.emit("playlist:updated");
+        EventBus.emit("playlistcontainer:updated");
     }
     SoundBankUI.setTabState(soundBankId);
 }
 export async function fetchPlayer(playlistId, title) {
     const ajaxUrl = window.musicPlayer?.ajaxUrl;
     if (!ajaxUrl) {
-        console.error("AJAX URL não está definido.");
         return;
     }
     const musicPlayerService = new MusicPlayerService(ajaxUrl);

@@ -9,7 +9,7 @@ export function handleProgressClick(event: MouseEvent, progressWrapper: HTMLElem
 
 export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTMLElement) {
   const rect = progressWrapper.getBoundingClientRect();
-  const progressBar = progressWrapper.querySelector<HTMLElement>(".music-bar__timeline-fill");
+  const progressBar = document.querySelector<HTMLElement>(".music-bar__timeline-fill");
   const currentTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--current");
   const totalTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--total");
   const duration = AudioUI.getDuration();
@@ -67,7 +67,7 @@ function updateProgressFromEvent(event: MouseEvent, progressWrapper: HTMLElement
   const width = rect.width;
   const percentage = Math.max(0, Math.min(1, clickedX / width));
 
-  const progressBar = progressWrapper.querySelector<HTMLElement>(".music-bar__timeline-fill");
+  const progressBar = document.querySelector<HTMLElement>(".music-bar__timeline-fill");
   if (progressBar) {
     progressBar.style.setProperty("--width", `${percentage * 100}%`);
   }

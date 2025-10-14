@@ -30,7 +30,7 @@ export async function handleItemDownload(
 
     URL.revokeObjectURL(url);
   } catch (error) {
-    console.error('Download failed', error);
+    
   } finally {
     PlaylistItemUI.endDownload(musicPlayerItemId);
     FixedBarUI.endDownload();

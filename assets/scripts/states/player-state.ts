@@ -1,6 +1,6 @@
+import { EventBus } from "../events/event-bus.js";
 import { IAudioItem } from "../interfaces/audio-item.js";
 import { IPlaylist } from "../interfaces/playlist.js";
-import { notifyPlaylistListeners } from "./player-listener.js";
 
 const playerState = {
     playlists: [] as IPlaylist[],
@@ -14,7 +14,7 @@ export function updatePlaylists(newPlaylists: IPlaylist[]) {
 
     if (uniqueNew.length > 0) {
         playerState.playlists.push(...uniqueNew);
-        notifyPlaylistListeners();
+        EventBus.emit("playlist:updated");
     }
 }
 

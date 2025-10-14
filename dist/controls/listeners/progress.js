@@ -1,5 +1,5 @@
 import { handleProgressClick, handleProgressMouseDown } from "../handlers/progress.handle.js";
-export function bindPlayerProgressUIEvents() {
+export function bindPlayerProgressUIListeners() {
     document.addEventListener('click', (event) => {
         const progressWrapper = event.target?.closest('.music-bar__timeline-bg');
         if (progressWrapper) {

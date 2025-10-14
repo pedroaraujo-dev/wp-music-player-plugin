@@ -1,6 +1,6 @@
 import { handleSoundBankButtonClick } from "../handlers/sound-bank.handle.js";
 
-export function bindSoundBankUIEvents() {
+export function bindSoundBankUIListeners() {
     const buttons = document.querySelectorAll<HTMLButtonElement>(".audio-track-library__tab-button");
 
     if (!buttons || buttons.length === 0) return;

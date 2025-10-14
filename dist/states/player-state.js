@@ -1,4 +1,4 @@
-import { notifyPlaylistListeners } from "./player-listener.js";
+import { EventBus } from "../events/event-bus.js";
 const playerState = {
     playlists: [],
     audios: [],
@@ -9,7 +9,7 @@ export function updatePlaylists(newPlaylists) {
     const uniqueNew = newPlaylists.filter(p => !keys.has(p.key));
     if (uniqueNew.length > 0) {
         playerState.playlists.push(...uniqueNew);
-        notifyPlaylistListeners();
+        EventBus.emit("playlist:updated");
     }
 }
 export function updatePlaylistAudios(playlistKey, audios) {

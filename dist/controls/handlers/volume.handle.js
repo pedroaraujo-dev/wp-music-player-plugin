@@ -16,7 +16,7 @@ export function handleVolumeClick(event, volumeWrapper) {
 }
 export function handleVolumeMouseDown(event, volumeWrapper) {
     const rect = volumeWrapper.getBoundingClientRect();
-    const volumeBar = volumeWrapper.querySelector(".music-bar__volume-fill");
+    const volumeBar = document.querySelector(".music-bar__volume-fill");
     let percentage = 0;
     let isFramePending = false;
     isVolumeInteracting = true;
@@ -53,7 +53,7 @@ function updateVolumeFromEvent(event, volumeWrapper, setAudioVolume = false) {
     const clickedX = event.clientX - rect.left;
     const width = rect.width;
     const percentage = Math.max(0, Math.min(1, clickedX / width));
-    const volumeBar = volumeWrapper.querySelector(".music-bar__volume-fill");
+    const volumeBar = document.querySelector(".music-bar__volume-fill");
     if (volumeBar) {
         volumeBar.style.setProperty("--width", `${percentage * 100}%`);
     }

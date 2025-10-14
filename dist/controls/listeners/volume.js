@@ -1,5 +1,5 @@
 import { handleVolumeClick, handleVolumeMouseDown, handleVolumeMuteBtnClick, handleVolumeUnmuteBtnClick } from "../handlers/volume.handle.js";
-export function bindPlayerVolumeUIEvents() {
+export function bindPlayerVolumeUIListeners() {
     document.addEventListener('click', (event) => {
         const volumeWrapper = event.target?.closest('.music-bar__volume-track');
         const volumeMuteBtn = event.target?.closest('.music-bar__volume-btn--mute');

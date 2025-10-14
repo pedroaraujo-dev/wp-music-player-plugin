@@ -4,16 +4,22 @@ export class AudioService {
     static async fetchAudios() {
         const playlists = playerState.playlists;
         const results = await Promise.all(playlists.map(async (data) => {
-            const res = await fetch(`https://conceitovoz.com.br/playlist-directory/get-content.php?site=${data.site}&playlist=${data.key}`, {
-                headers: { 'Name': data.key }
-            });
-            if (!res.ok)
-                throw new Error(`Erro ao carregar playlist ${data.key}`);
-            const raw = await res.json();
-            const audios = adaptAudioResponse(raw);
-            const sortedAudios = sortAudiosBySite(audios, data.site);
-            updatePlaylistAudios(data.key, sortedAudios);
-            return { ...data, sortedAudios, rendered: false };
+            try {
+                const res = await fetch(`https://conceitovoz.com.br/playlist-directory/get-content.php?site=${data.site}&playlist=${data.key}`, {
+                    headers: { 'Name': data.key }
+                });
+                if (!res.ok)
+                    return { ...data, audios: [], rendered: false };
+                const raw = await res.json();
+                const audios = adaptAudioResponse(raw);
+                const sortedAudios = sortAudiosBySite(audios, data.site);
+                updatePlaylistAudios(data.key, sortedAudios);
+                return { ...data, sortedAudios, rendered: false };
+            }
+            catch (error) {
+                console.error(error.message);
+                return { ...data, audios: [], rendered: false };
+            }
         }));
         const allAudios = results.flatMap((r) => r.audios);
         updateAudios(allAudios);

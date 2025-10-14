@@ -17,7 +17,7 @@ export async function handleSoundBankButtonClick(soundBankId: string, soundBankT
 
     if (!content) {
         await fetchPlayer(soundBankId, soundBankTitle);
-        EventBus.emit("playlist:updated");
+        EventBus.emit("playlistcontainer:updated");
     }
 
     SoundBankUI.setTabState(soundBankId);
@@ -27,7 +27,6 @@ export async function fetchPlayer(playlistId: string, title: string): Promise<vo
     const ajaxUrl = window.musicPlayer?.ajaxUrl;
 
     if (!ajaxUrl) {
-        console.error("AJAX URL não está definido.");
         return;
     }
 
