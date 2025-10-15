@@ -6,8 +6,6 @@ use MusicPlayer\Assets\Loader;
 use MusicPlayer\Admin\SettingsPage;
 use MusicPlayer\Shortcodes\PlayerShortcode;
 use MusicPlayer\Shortcodes\SoundBankShortcode;
-use MusicPlayer\Ajax\RenderPlaylistHandler;
-use MusicPlayer\Ajax\RenderPlayerHandler;
 
 class Init
 {
@@ -15,10 +13,15 @@ class Init
     {
         Loader::init();
         
-        RenderPlaylistHandler::register();
-        RenderPlayerHandler::register();
-        
         add_action('init', [self::class, 'init']);
+
+        if (is_admin()) {
+            self::adminInit();
+        }
+    }
+
+    public static function adminInit()
+    {
         add_action('admin_menu', [SettingsPage::class, 'registerMenu']);
         add_action('admin_init', [SettingsPage::class, 'registerSettings']);
     }

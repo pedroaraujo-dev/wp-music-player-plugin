@@ -1,3 +1,6 @@
+import { PlaylistContainerUI } from "./playlist-container.js";
+import { renderPlaylistItemSkeletonHTML } from "./templates/playlist-item-skeleton.js";
+
 export class SoundBankUI {
 
   static init(): void {
@@ -12,7 +15,7 @@ export class SoundBankUI {
     if (!button || !content) return;
 
     button.setAttribute("aria-expanded", "true");
-    content.setAttribute("aria-hidden", "true");
+    content.setAttribute("aria-hidden", "false");
 
     button.classList.add("active");
     content.classList.add("active");
@@ -20,9 +23,15 @@ export class SoundBankUI {
 
   static closeAllTabs(): void {
     const buttons = document.querySelectorAll<HTMLButtonElement>(".audio-track-library__tab-button");
-    const contents = document.querySelectorAll<HTMLDivElement>(".audio-track-library__tab-content");
+    const accordionButtons = document.querySelectorAll<HTMLButtonElement>(".audio-track-library__content-button");
+    const contents = document.querySelectorAll<HTMLDivElement>(".audio-track-library__content .music-player");
 
     buttons.forEach((button) => {
+      button.setAttribute("aria-expanded", "false");
+      button.classList.remove("active");
+    });
+
+    accordionButtons.forEach((button) => {
       button.setAttribute("aria-expanded", "false");
       button.classList.remove("active");
     });
@@ -33,16 +42,15 @@ export class SoundBankUI {
     });
   }
 
-  static renderPlayer(html: string): void {
-    const soundBankContainer = document.querySelector<HTMLDivElement>(".audio-track-library__content");
+  static renderPlayer(html: string, playlistId: string): void {
+    const soundBankContainer = document.querySelector<HTMLDivElement>(`.audio-track-library__content .audio-track-library__content-button[data-id="${playlistId}"]`);
     if (!soundBankContainer) return;
 
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, 'text/html');
     const fragment = document.createDocumentFragment();
-
     Array.from(doc.body.childNodes).forEach(node => fragment.appendChild(node));
-    soundBankContainer.appendChild(fragment);
+    soundBankContainer.after(fragment);
   }
 
   static openFirstTab(): void {

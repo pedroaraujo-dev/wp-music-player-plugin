@@ -3,7 +3,7 @@ export class FixedBarUI {
         const fixedBar = document.querySelector('.music-bar');
         if (!fixedBar)
             return;
-        fixedBar.classList.remove('music-bar--hidden');
+        this.show();
         const playButton = fixedBar.querySelector('.music-bar__button--play');
         const pauseButton = fixedBar.querySelector('.music-bar__button--pause');
         if (playButton)
@@ -15,7 +15,7 @@ export class FixedBarUI {
         const fixedBar = document.querySelector('.music-bar');
         if (!fixedBar)
             return;
-        fixedBar.classList.remove('music-bar--hidden');
+        this.show();
         const playButton = fixedBar.querySelector('.music-bar__button--play');
         const pauseButton = fixedBar.querySelector('.music-bar__button--pause');
         if (playButton)
@@ -37,11 +37,21 @@ export class FixedBarUI {
         if (durationElement)
             durationElement.textContent = audioItem.duration.toString() || '0:00';
     }
+    static show() {
+        const fixedBar = document.querySelector('.music-bar');
+        const body = document.querySelector('body');
+        if (!fixedBar || !body)
+            return;
+        fixedBar.classList.remove('music-bar--hidden');
+        body.classList.add('music-bar--visible');
+    }
     static hide() {
         const fixedBar = document.querySelector('.music-bar');
-        if (!fixedBar)
+        const body = document.querySelector('body');
+        if (!fixedBar || !body)
             return;
         fixedBar.classList.add('music-bar--hidden');
+        body.classList.remove('music-bar--visible');
     }
     static startDownload() {
         const fixedBar = document.querySelector('.music-bar');

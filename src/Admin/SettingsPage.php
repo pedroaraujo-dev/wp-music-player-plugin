@@ -127,6 +127,25 @@ class SettingsPage
             'music-player-settings'
         );
 
+        $soundBankFields = [
+            'sound_bank_button_background_color'   => 'Cor de fundo do botão do banco de trilhas',
+            'sound_bank_button_text_color' => 'Cor do texto do botão do banco de trilhas',
+            'sound_bank_button_background_color_active'   => 'Cor de fundo do botão do banco de trilhas ativo',
+            'sound_bank_button_text_color_active' => 'Cor do texto do botão do banco de trilhas ativo',
+        ];
+
+        foreach ($soundBankFields as $key => $label) {
+            register_setting('music_player_settings', $key);
+            add_settings_field(
+                $key,
+                $label,
+                [self::class, 'renderColorField'],
+                'music-player-settings',
+                'music_player_fixed_bar_section',
+                ['id' => $key]
+            );
+        }
+
         register_setting('music_player_settings', 'sound_banks_data');
 
         add_settings_field(

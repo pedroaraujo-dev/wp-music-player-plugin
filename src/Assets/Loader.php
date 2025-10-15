@@ -8,6 +8,7 @@ class Loader
     {
         add_action('wp_enqueue_scripts', [self::class, 'enqueueFrontendAssets']);
         add_action('wp_footer', [self::class, 'renderFixedBar']);
+        add_action('wp_head', [self::class, 'injectCustomCSSVariables']);
     }
 
     /**
@@ -73,6 +74,17 @@ class Loader
                 'nonce'   => wp_create_nonce('music_player_nonce'),
             ]
         );
+
+        // Inclui o site id para o script
+        wp_localize_script(
+            'music-player-script',
+            'musicPlayer',
+            [
+                'ajaxUrl' => admin_url('admin-ajax.php'),
+                'nonce'   => wp_create_nonce('music_player_nonce'),
+                'siteId'  => get_option('music_player_site_id'),
+            ]
+        );
     }
 
     /**
@@ -81,5 +93,48 @@ class Loader
     public static function renderFixedBar(): void
     {
         include plugin_dir_path(__FILE__) . '/../Views/fixed-bar-view.php';
+    }
+
+    /**
+     * Injeta variáveis CSS personalizadas no frontend.
+     */
+    public static function injectCustomCSSVariables(): void
+    {
+        $cssFields = [
+            // 🎵 PLAYER SETTINGS
+            'playlist_title_color',
+            'playlist_bg_color',
+            'audio_text_color',
+            'audio_bg_color',
+            'button_icon_color',
+            'button_bg_color',
+            'download_icon_color',
+
+            // 📊 FIXED BAR SETTINGS
+            'fixed_bar_bg_color',
+            'fixed_bar_text_color',
+            'fixed_bar_button_icon_color',
+            'fixed_bar_navigation_icon_color',
+            'fixed_bar_button_color',
+            'fixed_bar_close_icon_color',
+
+            // 🎧 SOUND BANK SETTINGS
+            'sound_bank_button_background_color',
+            'sound_bank_button_text_color',
+            'sound_bank_button_background_color_active',
+            'sound_bank_button_text_color_active',
+        ];
+
+        $cssVariables = '';
+        foreach ($cssFields as $key) {
+            $value = get_option($key);
+            if ($value !== false && $value !== '') {
+                $cssVariables .= "--{$key}: {$value};\n";
+            }
+        }
+
+        if ($cssVariables) {
+            echo "<style id='music-player-css-vars'>body {{$cssVariables}}</style>";
+        }
     }
 }
