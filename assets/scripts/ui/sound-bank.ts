@@ -1,6 +1,3 @@
-import { PlaylistContainerUI } from "./playlist-container.js";
-import { renderPlaylistItemSkeletonHTML } from "./templates/playlist-item-skeleton.js";
-
 export class SoundBankUI {
 
   static init(): void {

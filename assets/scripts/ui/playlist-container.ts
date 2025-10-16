@@ -18,10 +18,11 @@ export class PlaylistContainerUI {
       if (playlist.rendered) continue;
       const container = playlist.container;
       const playlistBox = container.querySelector<HTMLElement>('.music-player__playlist');
-      if (!playlistBox) continue;
+
+      if (!playlistBox || !playlist.audios || playlist.audios.length === 0) continue;
   
       try {
-        const html = await AudioService.fetchAudioItemHTML(playlist.audios);
+        const html = AudioService.fetchAudioItemHTML(playlist.audios);
         playlistBox.innerHTML = html;
         playlist.rendered = true;
       } catch (error) {

@@ -37,8 +37,26 @@ export class AudioService {
     
     updateAudios(allAudios);
   }
+
+  static async downloadAudio(url: string): Promise<void> {
+    try {
+      const res = await fetch(url);
+      if (!res.ok) throw new Error('Network response was not ok');
+      const blob = await res.blob();
+      const downloadUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = downloadUrl;
+      a.download = url.split('/').pop() || 'download';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(downloadUrl);
+    } catch (error) {
+      console.error('Download failed:', (error as Error).message);
+    }
+  }
   
-  static async fetchAudioItemHTML(audios: IAudioItem[]): Promise<string> {
+  static fetchAudioItemHTML(audios: IAudioItem[]): string {
     const htmlItems = audios.map((audio, index) => 
       renderPlaylistItemHTML(
         audio.id,

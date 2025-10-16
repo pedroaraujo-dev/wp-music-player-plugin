@@ -22,4 +22,13 @@ export function updateAudios(newAudios) {
     const uniqueNew = newAudios.filter(a => !ids.has(a.id));
     playerState.audios.push(...uniqueNew);
 }
+export function findAudioById(id) {
+    return playerState.audios.find(a => a.id === id);
+}
+export function findAudioIndexById(id) {
+    return playerState.audios.findIndex(audio => audio.id === id);
+}
+export function updateCurrentlyPlayingId(id) {
+    playerState.currentlyPlayingId = id;
+}
 export { playerState };

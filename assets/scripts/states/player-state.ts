@@ -29,4 +29,16 @@ export function updateAudios(newAudios: IAudioItem[]) {
     playerState.audios.push(...uniqueNew);
 }
 
+export function findAudioById(id: string): IAudioItem | undefined {
+    return playerState.audios.find(a => a.id === id);
+}
+
+export function findAudioIndexById(id: string): number {
+    return playerState.audios.findIndex(audio => audio.id === id);
+}
+
+export function updateCurrentlyPlayingId(id: string | null) {
+    playerState.currentlyPlayingId = id;
+}
+
 export { playerState };

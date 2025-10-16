@@ -1,4 +1,4 @@
-import { playerState } from "../../states/player-state.js";
+import { findAudioById, playerState } from "../../states/player-state.js";
 import { FixedBarUI } from "../../ui/fixed-bar.js";
 import { PlaylistItemUI } from "../../ui/playlist-item.js";
 
@@ -9,7 +9,7 @@ export async function handleItemDownload(
     return;
   }
 
-  const audio = playerState.audios.find(a => a.id === musicPlayerItemId);
+  const audio = findAudioById(musicPlayerItemId);
   if (!audio) return;
 
   const downloadUrl = audio.url;

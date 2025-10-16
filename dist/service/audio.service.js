@@ -26,7 +26,26 @@ export class AudioService {
         const allAudios = results.flatMap((r) => r.audios);
         updateAudios(allAudios);
     }
-    static async fetchAudioItemHTML(audios) {
+    static async downloadAudio(url) {
+        try {
+            const res = await fetch(url);
+            if (!res.ok)
+                throw new Error('Network response was not ok');
+            const blob = await res.blob();
+            const downloadUrl = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = downloadUrl;
+            a.download = url.split('/').pop() || 'download';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(downloadUrl);
+        }
+        catch (error) {
+            console.error('Download failed:', error.message);
+        }
+    }
+    static fetchAudioItemHTML(audios) {
         const htmlItems = audios.map((audio, index) => renderPlaylistItemHTML(audio.id, audio.name, audio.duration, index + 1, audio.url));
         return htmlItems.join('');
     }

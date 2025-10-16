@@ -24,7 +24,6 @@ class _EventBus<Events extends EventMap = Record<string, any>> {
 }
 
 interface AppEvents {
-  "playlistcontainer:updated": void;
   "playlist:updated": void;
 }
 

@@ -1,4 +1,4 @@
-import { EventBus } from "../../events/event-bus.js";
+import { PlaylistContainerUI } from "../../ui/playlist-container.js";
 import { SoundBankUI } from "../../ui/sound-bank.js";
 import { renderPlaylistHTML } from "../../ui/templates/playlist.js";
 
@@ -17,7 +17,7 @@ export function handleSoundBankButtonClick(soundBankId: string, soundBankTitle: 
 
     if (!content) {
         fetchPlayer(soundBankId, soundBankTitle);
-        EventBus.emit("playlistcontainer:updated");
+        PlaylistContainerUI.syncFromDOM();
     }
 
     SoundBankUI.setTabState(soundBankId);

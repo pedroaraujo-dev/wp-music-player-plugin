@@ -1,4 +1,4 @@
-import { playerState } from "../../states/player-state.js";
+import { findAudioById, playerState, updateCurrentlyPlayingId } from "../../states/player-state.js";
 import { AudioUI } from "../../ui/audio.js";
 import { FixedBarUI } from "../../ui/fixed-bar.js";
 import { PlaylistItemUI } from "../../ui/playlist-item.js";
@@ -14,7 +14,7 @@ export function handleItemPlay(
   
   handlePause();
 
-  const currentAudio = playerState.audios.find(audio => audio.id === musicPlayerItemId);
+  const currentAudio = findAudioById(musicPlayerItemId);
 
   if (!currentAudio) return;
 
@@ -23,7 +23,7 @@ export function handleItemPlay(
   if (!isCurrentlyPlaying) {
     FixedBarUI.updateInfo(currentAudio);
     AudioUI.updateSource(currentAudio.url);
-    playerState.currentlyPlayingId = musicPlayerItemId;
+    updateCurrentlyPlayingId(musicPlayerItemId);
   }
 
   PlaylistItemUI.play(musicPlayerItemId);
