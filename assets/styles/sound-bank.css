@@ -43,13 +43,13 @@
     padding: 0.75rem 1rem;
     border-radius: 5px;
     cursor: pointer;
-    background: var(--sound-bank-button-bg-color, rgba(0, 0, 0, 1));
-    color: var(--sound-bank-button-text-color, #ffffff);
+    background: var(--sound_bank_button_background_color);
+    color: var(--sound_bank_button_text_color);
 }
 
 .audio-track-library__tab-button.active {
-    background: var(--sound-bank-button-bg-color-active, rgba(0, 0, 0, 0.8));
-    color: var(--sound-bank-button-text-color-active, #ffffff);
+    background: var(--sound_bank_button_background_color_active);
+    color: var(--sound_bank_button_text_color_active);
 }
 
 /* Content */
@@ -67,6 +67,7 @@
 /* Player */
 .audio-track-library__content .music-player {
     padding: 0;
+    background: transparent !important;
 }
 
 .audio-track-library__content .music-player:not(.active) {
@@ -96,17 +97,17 @@
     padding: 0.75rem 1rem;
     border-radius: 5px;
     cursor: pointer;
-    background: var(--sound-bank-button-bg-color, rgba(0, 0, 0, 1));
-    color: var(--sound-bank-button-text-color, #ffffff);
+    background: var(--sound_bank_button_background_color);
+    color: var(--sound_bank_button_text_color);
 }
 
 .audio-track-library__content-button.active {
-    background: var(--sound-bank-button-bg-color-active, rgba(0, 0, 0, 0.8));
-    color: var(--sound-bank-button-text-color-active, #ffffff);
+    background: var(--sound_bank_button_background_color_active);
+    color: var(--sound_bank_button_text_color_active);
 }
 
 @media (min-width: 1025px) {
-    .audio-track-library__content button.audio-track-library__content-button {
+    .audio-track-library__content .audio-track-library__content-button {
         display: none;
     }
 }

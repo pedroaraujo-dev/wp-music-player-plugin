@@ -106,6 +106,7 @@ class Loader
             'playlist_bg_color',
             'audio_text_color',
             'audio_bg_color',
+            'audio_active_bg_color',
             'button_icon_color',
             'button_bg_color',
             'download_icon_color',
@@ -117,12 +118,19 @@ class Loader
             'fixed_bar_navigation_icon_color',
             'fixed_bar_button_color',
             'fixed_bar_close_icon_color',
+            'fixed_bar_download_icon_color',
+            'fixed_bar_download_button_color',
 
             // 🎧 SOUND BANK SETTINGS
             'sound_bank_button_background_color',
             'sound_bank_button_text_color',
             'sound_bank_button_background_color_active',
             'sound_bank_button_text_color_active',
+
+            // 🖼️ SKELETON LOADER SETTINGS
+            'skeleton_background_color',
+            'skeleton_gradient_color',
+            'skeleton_element_color',
         ];
 
         $cssVariables = '';

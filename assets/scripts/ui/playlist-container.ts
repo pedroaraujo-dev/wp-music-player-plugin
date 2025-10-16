@@ -22,7 +22,6 @@ export class PlaylistContainerUI {
   
       try {
         const html = await AudioService.fetchAudioItemHTML(playlist.audios);
-        console.log(html);
         playlistBox.innerHTML = html;
         playlist.rendered = true;
       } catch (error) {

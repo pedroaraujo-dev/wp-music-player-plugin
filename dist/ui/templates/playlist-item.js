@@ -8,23 +8,21 @@ export function renderPlaylistItemHTML(id, title, duration, order, url) {
             data-url="${url}"
         >
             <div class="music-player__item-left">
-                <button 
+                <div 
                     class="music-player__button music-player__button--play"
                     style="background: var(--button_bg_color); color: var(--button_icon_color);"
                     aria-label="Play áudio"
-                    type="button"
                 >
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M8 5v14l11-7z"></path></svg>
-                </button>
+                </div>
 
-                <button 
+                <div 
                     class="music-player__button music-player__button--pause"
                     style="background: var(--button_bg_color); color: var(--button_icon_color); display: none;"
                     aria-label="Pause áudio"
-                    type="button"
                 >
                     <svg stroke="currentColor" fill="currentColor" stroke-width="0" viewBox="0 0 24 24" height="30px" width="30px" xmlns="http://www.w3.org/2000/svg"><path fill="none" d="M0 0h24v24H0z"></path><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"></path></svg>
-                </button>
+                </div>
 
                 <div class="music-player__track-info">
                     <div class="music-player__track-position">${order}</div>

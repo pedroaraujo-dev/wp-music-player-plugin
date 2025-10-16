@@ -13,23 +13,22 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
   class="music-bar music-bar--hidden"
   style="background: <?php echo esc_attr($fixed_bar_bg_color); ?>; color: <?php echo esc_attr($fixed_bar_text_color); ?>;" 
 >
-  <button type="button" aria-label="Fechar" class="music-bar__close" style="color: <?php echo esc_attr($fixed_bar_close_icon_color); ?>;">
+  <div aria-label="Fechar" class="music-bar__close" style="color: <?php echo esc_attr($fixed_bar_close_icon_color); ?>;">
     <?php
         $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/times.svg';
         if (file_exists($icon_path)) {
             echo file_get_contents($icon_path);
         }
     ?>
-  </button>
+  </div>
 
   <div class="music-bar__content">
 
     <div class="music-bar__controls">
-      <button
+      <div
         aria-label="Anterior"
         class="music-bar__button music-bar__button--prev"
         style="color: <?php echo esc_attr($fixed_bar_navigation_icon_color); ?>;"
-        type="button"
       >
          <?php
             $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/skip-previous.svg';
@@ -37,13 +36,12 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
                 echo file_get_contents($icon_path);
             }
         ?>
-      </button>
+      </div>
 
-      <button
+      <div
         aria-label="Play"
         class="music-bar__button music-bar__button--play"
         style="background: <?php echo esc_attr($fixed_bar_button_color); ?>; color: <?php echo esc_attr($fixed_bar_button_icon_color); ?>;"
-        type="button"
       >
         <div style="display: flex; align-items: center; justify-content: center; margin-left: 2px;">
           <?php
@@ -53,13 +51,12 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
               }
           ?>
         </div>
-      </button>
+      </div>
 
-      <button
+      <div
         aria-label="Pause"
         class="music-bar__button music-bar__button--pause"
         style="background: <?php echo esc_attr($fixed_bar_button_color); ?>; color: <?php echo esc_attr($fixed_bar_button_icon_color); ?>; display: none;"
-        type="button"
       >
         <?php
             $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/pause.svg';
@@ -67,13 +64,12 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
                 echo file_get_contents($icon_path);
             }
         ?>
-      </button>
+      </div>
 
-      <button
+      <div
         aria-label="Próximo"
         class="music-bar__button music-bar__button--next"
         style="color: <?php echo esc_attr($fixed_bar_navigation_icon_color); ?>;"
-        type="button"
       >
         <?php
             $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/skip-next.svg';
@@ -81,7 +77,7 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
                 echo file_get_contents($icon_path);
             }
         ?>
-      </button>
+      </div>
     </div>
 
     <div class="music-bar__info">
@@ -121,11 +117,10 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
           ></div>
         </div>
 
-        <button
+        <div
           aria-label="Silenciar"
           class="music-bar__volume-btn music-bar__volume-btn--mute"
           style="color: <?php echo esc_attr($fixed_bar_text_color); ?>;"
-          type="button"
         >
           <?php
               $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/volume.svg';
@@ -133,13 +128,12 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
                   echo file_get_contents($icon_path);
               }
           ?>
-        </button>
+        </div>
 
-        <button
+        <div
           aria-label="Desativar silêncio"
           class="music-bar__volume-btn music-bar__volume-btn--unmute"
           style="color: <?php echo esc_attr($fixed_bar_text_color); ?>; display: none;"
-          type="button"
         >
           <?php
               $icon_path = plugin_dir_path(__FILE__) . '../../assets/icons/mute.svg';
@@ -147,7 +141,7 @@ $fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#00
                   echo file_get_contents($icon_path);
               }
           ?>
-        </button>
+        </div>
       </div>
 
       <a class="music-bar__download" role="button">

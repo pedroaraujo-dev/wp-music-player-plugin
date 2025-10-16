@@ -167,7 +167,7 @@
 .music-bar__actions {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   margin-left: auto;
 }
 
@@ -234,7 +234,7 @@
 /* ---------- Download ---------- */
 
 .music-bar__download {
-  border-radius: 9999px;
+  border-radius: 5px;
   padding: 0.5rem 1.25rem;
   text-decoration: none;
   font-weight: 600;

@@ -52,6 +52,7 @@ class SettingsPage
             'playlist_bg_color' => 'Cor de fundo da Playlist',
             'audio_text_color' => 'Cor dos textos do áudio na Playlist',
             'audio_bg_color' => 'Cor de fundo do áudio na Playlist',
+            'audio_active_bg_color' => 'Cor de fundo do áudio ativo na Playlist',
             'button_icon_color' => 'Cor do ícone de Play/Pause do áudio na Playlist',
             'button_bg_color' => 'Cor do botão de Play/Pause do áudio na Playlist',
             'download_icon_color' => 'Cor do botão de Download do áudio na Playlist',
@@ -90,6 +91,8 @@ class SettingsPage
             'fixed_bar_navigation_icon_color' => 'Cor do ícone Próximo/Anterior da barra fixa',
             'fixed_bar_button_color' => 'Cor de fundo do botão Play/Pause da barra fixa',
             'fixed_bar_close_icon_color' => 'Cor do ícone de fechar da barra fixa',
+            'fixed_bar_download_icon_color' => 'Cor do ícone de download da barra fixa',
+            'fixed_bar_download_button_color' => 'Cor de fundo do botão de download da barra fixa',
         ];
 
         add_settings_section(
@@ -141,7 +144,7 @@ class SettingsPage
                 $label,
                 [self::class, 'renderColorField'],
                 'music-player-settings',
-                'music_player_fixed_bar_section',
+                'music_player_soundbanks_section',
                 ['id' => $key]
             );
         }
@@ -156,6 +159,38 @@ class SettingsPage
             'music_player_soundbanks_section',
             ['id' => 'sound_banks_data']
         );
+
+        /* -------------------------
+        *  SECTION: PLAYER SKELETON
+        * ------------------------- */
+
+        add_settings_section(
+            'music_player_skeleton_section',
+            '💀 Player Skeleton',
+            function () {
+                echo '<p>Define the appearance of the loading skeleton for the player.</p>';
+                echo '<p class="description">Accepts formats like rgba() or #rrggbbaa.</p>';
+            },
+            'music-player-settings'
+        );
+
+        $skeletonFields = [
+            'skeleton_background_color' => 'Skeleton background color',
+            'skeleton_gradient_color'   => 'Skeleton animation gradient color',
+            'skeleton_element_color'    => 'Skeleton element background color',
+        ];
+
+        foreach ($skeletonFields as $key => $label) {
+            register_setting('music_player_settings', $key);
+            add_settings_field(
+                $key,
+                $label,
+                [self::class, 'renderColorField'],
+                'music-player-settings',
+                'music_player_skeleton_section',
+                ['id' => $key]
+            );
+        }
     }
 
     public static function renderColorField($args)

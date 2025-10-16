@@ -14,13 +14,12 @@ style="--sound-bank-button-bg-color: <?php echo esc_attr($soundBankButtonBgColor
     <div class="audio-track-library__tabs-wrapper">
         <div class="audio-track-library__tabs">
             <?php foreach ($soundBanks as $bank): ?>
-                <button
+                <div
                     class="audio-track-library__tab-button" 
                     aria-expanded="false" 
                     data-site="<?php echo esc_attr($site); ?>"
                     data-id="<?= esc_attr($bank['id']); ?>"
                     data-title="<?= esc_attr($bank['name']); ?>"
-                    type="button"
                 >
                     <?php if (!empty($bank['icon'])): ?>
                         <img 
@@ -31,20 +30,19 @@ style="--sound-bank-button-bg-color: <?php echo esc_attr($soundBankButtonBgColor
                         >
                     <?php endif; ?>
                     <?= esc_html($bank['name']); ?>
-                </button>
+                </div>
             <?php endforeach; ?>
         </div>
     </div>
 
     <div class="audio-track-library__content">
         <?php foreach ($soundBanks as $bank): ?>
-            <button 
+            <div 
                 class="audio-track-library__content-button" 
                 aria-expanded="false" 
                 data-site="<?php echo esc_attr($site); ?>"
                 data-id="<?= esc_attr($bank['id']); ?>"
                 data-title="<?= esc_attr($bank['name']); ?>"
-                type="button"
             >
                 <?php if (!empty($bank['icon'])): ?>
                     <img 
@@ -55,7 +53,7 @@ style="--sound-bank-button-bg-color: <?php echo esc_attr($soundBankButtonBgColor
                     >
                 <?php endif; ?>
                 <?= esc_html($bank['name']); ?>
-            </button>
+                </div>
         <?php endforeach; ?>
     </div>
 </div>
