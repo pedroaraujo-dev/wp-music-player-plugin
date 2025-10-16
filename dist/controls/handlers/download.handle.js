@@ -1,6 +1,5 @@
+import { DownloadFlowController } from "../../flows/download-flow-controller.js";
 import { findAudioById, playerState } from "../../states/player-state.js";
-import { FixedBarUI } from "../../ui/fixed-bar.js";
-import { PlaylistItemUI } from "../../ui/playlist-item.js";
 export async function handleItemDownload(musicPlayerItemId) {
     if (!musicPlayerItemId) {
         return;
@@ -8,33 +7,14 @@ export async function handleItemDownload(musicPlayerItemId) {
     const audio = findAudioById(musicPlayerItemId);
     if (!audio)
         return;
-    const downloadUrl = audio.url;
-    if (!downloadUrl)
-        return;
-    try {
-        PlaylistItemUI.startDownload(musicPlayerItemId);
-        const response = await fetch(downloadUrl);
-        const blob = await response.blob();
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = audio.name || 'download';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
-    }
-    catch (error) {
-    }
-    finally {
-        PlaylistItemUI.endDownload(musicPlayerItemId);
-        FixedBarUI.endDownload();
-    }
+    DownloadFlowController.downloadAudio(audio);
 }
 export function handleBarDownload() {
     const currentlyPlayingId = playerState.currentlyPlayingId;
     if (!currentlyPlayingId)
         return;
-    FixedBarUI.startDownload();
-    handleItemDownload(currentlyPlayingId);
+    const audio = findAudioById(currentlyPlayingId);
+    if (!audio)
+        return;
+    DownloadFlowController.downloadAudio(audio);
 }

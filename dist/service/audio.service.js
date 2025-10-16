@@ -26,23 +26,41 @@ export class AudioService {
         const allAudios = results.flatMap((r) => r.audios);
         updateAudios(allAudios);
     }
-    static async downloadAudio(url) {
+    static async downloadAudio(audio) {
+        const audioLink = audio.url;
+        const audioName = audio.name || "audio";
+        const postUrl = "https://conceitovoz.com.br/download-audio.php";
+        const postData = new URLSearchParams({
+            url: audioLink,
+            audioname: audioName
+        });
         try {
-            const res = await fetch(url);
-            if (!res.ok)
-                throw new Error('Network response was not ok');
-            const blob = await res.blob();
-            const downloadUrl = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = downloadUrl;
-            a.download = url.split('/').pop() || 'download';
+            const response = await fetch(postUrl, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: postData
+            });
+            if (!response.ok) {
+                throw new Error(`Erro HTTP: ${response.status}`);
+            }
+            const blob = await response.blob();
+            if (blob.size === 0) {
+                throw new Error("Áudio inválido ou vazio");
+            }
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `${audioName}.mp3`;
             document.body.appendChild(a);
             a.click();
-            document.body.removeChild(a);
-            URL.revokeObjectURL(downloadUrl);
+            setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+            return true;
         }
         catch (error) {
-            console.error('Download failed:', error.message);
+            console.error("Falha ao baixar áudio:", error);
+            throw error;
         }
     }
     static fetchAudioItemHTML(audios) {
