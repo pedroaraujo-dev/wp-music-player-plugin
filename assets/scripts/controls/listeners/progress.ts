@@ -2,7 +2,7 @@ import { handleProgressClick, handleProgressMouseDown } from "../handlers/progre
 
 export function bindPlayerProgressUIListeners() {
     document.addEventListener('click', (event) => {
-        const progressWrapper = (event.target as HTMLElement)?.closest('.music-bar__timeline-bg');
+        const progressWrapper = (event.target as HTMLElement)?.closest('.music-bar__timeline');
 
         if (progressWrapper) {
             handleProgressClick(event, progressWrapper as HTMLElement);
@@ -10,7 +10,7 @@ export function bindPlayerProgressUIListeners() {
     });
 
     document.addEventListener('mousedown', (event) => {
-        const progressWrapper = (event.target as HTMLElement)?.closest('.music-bar__timeline-bg');
+        const progressWrapper = (event.target as HTMLElement)?.closest('.music-bar__timeline');
 
         if (progressWrapper) {
             handleProgressMouseDown(event, progressWrapper as HTMLElement);

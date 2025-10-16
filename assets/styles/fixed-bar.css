@@ -115,7 +115,7 @@
 
 .music-bar__timeline {
   flex: 1;
-  height: 4px;
+  height: 20px;
   display: flex;
   align-items: center;
   cursor: pointer;
@@ -174,7 +174,7 @@
 .music-bar__volume-wrapper {
   display: none;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.5rem;
 }
 
 @media (min-width: 1024px) {
@@ -186,6 +186,9 @@
 .music-bar__volume {
   position: relative;
   display: flex;
+  height: 20px;
+  align-items: center;
+  cursor: pointer;
 }
 
 .music-bar__volume-track {
@@ -193,7 +196,6 @@
   height: 4px;
   border-radius: 2px;
   position: relative;
-  cursor: pointer;
   opacity: 0.25;
 }
 

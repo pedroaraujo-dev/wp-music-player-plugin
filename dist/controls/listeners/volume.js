@@ -1,7 +1,7 @@
 import { handleVolumeClick, handleVolumeMouseDown, handleVolumeMuteBtnClick, handleVolumeUnmuteBtnClick } from "../handlers/volume.handle.js";
 export function bindPlayerVolumeUIListeners() {
     document.addEventListener('click', (event) => {
-        const volumeWrapper = event.target?.closest('.music-bar__volume-track');
+        const volumeWrapper = event.target?.closest('.music-bar__volume');
         const volumeMuteBtn = event.target?.closest('.music-bar__volume-btn--mute');
         const volumeUnmuteBtn = event.target?.closest('.music-bar__volume-btn--unmute');
         if (volumeWrapper) {
@@ -15,7 +15,7 @@ export function bindPlayerVolumeUIListeners() {
         }
     });
     document.addEventListener('mousedown', (event) => {
-        const volumeWrapper = event.target?.closest('.music-bar__volume-track');
+        const volumeWrapper = event.target?.closest('.music-bar__volume');
         if (volumeWrapper) {
             handleVolumeMouseDown(event, volumeWrapper);
         }

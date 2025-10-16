@@ -1,6 +1,6 @@
-import { AudioService } from "../service/audio.service";
-import { FixedBarUI } from "../ui/fixed-bar";
-import { PlaylistItemUI } from "../ui/playlist-item";
+import { AudioService } from "../service/audio.service.js";
+import { FixedBarUI } from "../ui/fixed-bar.js";
+import { PlaylistItemUI } from "../ui/playlist-item.js";
 export class DownloadFlowController {
     static async downloadAudio(audio) {
         PlaylistItemUI.startDownload(audio.id);
