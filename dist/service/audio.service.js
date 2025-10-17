@@ -29,7 +29,7 @@ export class AudioService {
     static async downloadAudio(audio) {
         const audioLink = audio.url;
         const audioName = audio.name || "audio";
-        const postUrl = "https://conceitovoz.com.br/download-audio.php";
+        const postUrl = "/download-audio.php";
         const postData = new URLSearchParams({
             url: audioLink,
             audioname: audioName

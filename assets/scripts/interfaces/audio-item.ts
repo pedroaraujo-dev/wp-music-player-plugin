@@ -24,8 +24,8 @@ export function adaptAudioResponse(raw: any[]): IAudioItem[] {
 
     return {
       id: item.id,
-      name: item.XXXX || item.name || 'Sem Nome',
-      category: item.category || 'Sem Categoria',
+      name: item.name || '',
+      category: item.category || '',
       duration: item.audioDuration,
       url: item.url,
       tags: metadataKeys,
