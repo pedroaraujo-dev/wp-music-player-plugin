@@ -1,7 +1,7 @@
 {
   "scripts": {
     "serve": "tsc --watch",
-    "build": "tsc && npx terser dist/main.js -o dist/main.min.js"
+    "build": "npx esbuild assets/scripts/main.ts --bundle --minify --outfile=dist/main.js --format=iife --target=es2018"
   },
   "devDependencies": {
     "terser": "^5.44.0",
