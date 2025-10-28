@@ -248,7 +248,7 @@
   transition: box-shadow 0.2s ease, transform 0.2s ease;
   cursor: pointer;
   background: var(--fixed_bar_download_button_color);
-  color: var(--fixed_bar_download_icon_color);
+  color: var(--fixed_bar_download_icon_color) !important;
 }
 
 .music-bar__download-label {
