@@ -1,4 +1,4 @@
-export function renderPlaylistItemHTML(id, title, duration, order, url) {
+export function renderPlaylistItemHTML(id, title, tag, duration, order, url) {
     return `
         <div 
             class="music-player__item" 
@@ -28,6 +28,7 @@ export function renderPlaylistItemHTML(id, title, duration, order, url) {
                     <div class="music-player__track-position">${order}</div>
                     <div class="music-player__track-separator">-</div>
                     <div class="music-player__track-title">${title}</div>
+                    ${tag ? `<div class="music-player__track-tag">${tag}</div>` : ''}
                 </div>
             </div>
 

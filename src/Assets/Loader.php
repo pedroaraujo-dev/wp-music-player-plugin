@@ -103,6 +103,8 @@ class Loader
         $cssFields = [
             // 🎵 PLAYER SETTINGS
             'playlist_title_color',
+            'audio_tag_text_color',
+            'audio_tag_bg_color',
             'playlist_bg_color',
             'audio_text_color',
             'audio_bg_color',

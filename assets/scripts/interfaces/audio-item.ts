@@ -4,7 +4,8 @@ export interface IAudioItem {
   category: string;
   duration: string;
   url: string;
-  tags: string[];
+  tag: string;
+  order: number;
   metadata: Record<string, any>;
 }
 
@@ -14,7 +15,7 @@ function parseDuration(duration: string): number {
 }
 
 export function adaptAudioResponse(raw: any[]): IAudioItem[] {
-  return raw.map((item) => {
+  return raw.reduce<IAudioItem[]>((acc, item) => {
     const metadataKeys = Object.keys(item).filter(
       (key) =>
         typeof item[key] === 'object' &&
@@ -22,24 +23,38 @@ export function adaptAudioResponse(raw: any[]): IAudioItem[] {
         'visible' in item[key]
     );
 
-    return {
+    const site = (window as any).musicPlayer?.siteId;
+
+    const visible = item[site]?.visible ?? true;
+
+    if (!visible) {
+      return acc;
+    }
+
+    const order = Number(item[site]?.order) || 0;
+    const tag = item[site]?.tag || '';
+    const label = item[site]?.label || '';
+
+    acc.push({
       id: item.id,
-      name: item.name || '',
+      name: label || item.name || '',
       category: item.category || '',
-      duration: item.audioDuration,
+      duration: item.audioDuration || '',
       url: item.url,
-      tags: metadataKeys,
-      metadata: metadataKeys.reduce((acc, key) => {
-        acc[key] = {
+      tag: tag,
+      order: order,
+      metadata: metadataKeys.reduce((metaAcc, key) => {
+        metaAcc[key] = {
           visible: !!item[key].visible,
           order: Number(item[key].order) || 0,
           tag: item[key].tag || '',
           label: item[key].label || '',
         };
-        return acc;
+        return metaAcc;
       }, {} as Record<string, any>),
-    };
-  });
+    });
+    return acc;
+  }, []);
 }
 
 export function sortAudiosBySite(audios: IAudioItem[], site: string): IAudioItem[] {

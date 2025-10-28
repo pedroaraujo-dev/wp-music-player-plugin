@@ -64,7 +64,7 @@ export class AudioService {
         }
     }
     static fetchAudioItemHTML(audios) {
-        const htmlItems = audios.map((audio, index) => renderPlaylistItemHTML(audio.id, audio.name, audio.duration, index + 1, audio.url));
+        const htmlItems = audios.map((audio, index) => renderPlaylistItemHTML(audio.id, audio.name, audio.tag, audio.duration, index + 1, audio.url));
         return htmlItems.join('');
     }
 }

@@ -88,6 +88,7 @@ export class AudioService {
       renderPlaylistItemHTML(
         audio.id,
         audio.name,
+        audio.tag,
         audio.duration,
         index + 1,
         audio.url

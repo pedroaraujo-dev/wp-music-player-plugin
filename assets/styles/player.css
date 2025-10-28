@@ -118,6 +118,16 @@
   font-weight: 500;
 }
 
+.music-player__track-tag {
+  font-size: 0.55rem;
+  letter-spacing: 1px;
+  font-weight: 600;
+  background: var(--audio_tag_bg_color);
+  color: var(--audio_tag_text_color);
+  border-radius: 5px;
+  padding: 0.2rem 0.4rem;
+}
+
 .music-player__duration {
   font-size: 0.7rem;
   opacity: 0.5;

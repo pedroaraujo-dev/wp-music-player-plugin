@@ -6,6 +6,7 @@ export function handleProgressClick(event, progressWrapper) {
     updateProgressFromEvent(event, progressWrapper, true);
 }
 export function handleProgressMouseDown(event, progressWrapper) {
+    event.preventDefault();
     const rect = progressWrapper.getBoundingClientRect();
     const progressBar = document.querySelector(".music-bar__timeline-fill");
     const currentTimeDisplay = progressWrapper.querySelector(".music-bar__time--current");
@@ -14,6 +15,7 @@ export function handleProgressMouseDown(event, progressWrapper) {
     let percentage = 0;
     let isFramePending = false;
     isUserInteracting = true;
+    progressWrapper.setPointerCapture(event.pointerId);
     function updateProgress(clientX) {
         const mouseX = clientX - rect.left;
         const width = rect.width;
@@ -29,7 +31,7 @@ export function handleProgressMouseDown(event, progressWrapper) {
                 totalTimeDisplay.textContent = formatTime(duration);
         }
     }
-    function onMouseMove(e) {
+    function onPointerMove(e) {
         if (isFramePending)
             return;
         isFramePending = true;
@@ -38,16 +40,16 @@ export function handleProgressMouseDown(event, progressWrapper) {
             isFramePending = false;
         });
     }
-    function onMouseUp(e) {
-        document.removeEventListener("mousemove", onMouseMove);
-        document.removeEventListener("mouseup", onMouseUp);
+    function onPointerUp(e) {
+        document.removeEventListener("pointermove", onPointerMove);
+        document.removeEventListener("pointerup", onPointerUp);
         updateProgress(e.clientX);
         const newTime = duration * percentage;
         AudioUI.setCurrentTime(newTime);
         isUserInteracting = false;
     }
-    document.addEventListener("mousemove", onMouseMove);
-    document.addEventListener("mouseup", onMouseUp);
+    document.addEventListener("pointermove", onPointerMove);
+    document.addEventListener("pointerup", onPointerUp);
     updateProgress(event.clientX);
 }
 function updateProgressFromEvent(event, progressWrapper, setAudioTime = false) {

@@ -7,7 +7,9 @@ export function handleProgressClick(event: MouseEvent, progressWrapper: HTMLElem
   updateProgressFromEvent(event, progressWrapper, true);
 }
 
-export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTMLElement) {
+export function handleProgressMouseDown(event: PointerEvent, progressWrapper: HTMLElement) {
+  event.preventDefault();
+
   const rect = progressWrapper.getBoundingClientRect();
   const progressBar = document.querySelector<HTMLElement>(".music-bar__timeline-fill");
   const currentTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--current");
@@ -16,8 +18,9 @@ export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTML
 
   let percentage = 0;
   let isFramePending = false;
-
   isUserInteracting = true;
+
+  progressWrapper.setPointerCapture(event.pointerId);
 
   function updateProgress(clientX: number) {
     const mouseX = clientX - rect.left;
@@ -35,7 +38,7 @@ export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTML
     }
   }
 
-  function onMouseMove(e: MouseEvent) {
+  function onPointerMove(e: PointerEvent) {
     if (isFramePending) return;
     isFramePending = true;
 
@@ -45,9 +48,9 @@ export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTML
     });
   }
 
-  function onMouseUp(e: MouseEvent) {
-    document.removeEventListener("mousemove", onMouseMove);
-    document.removeEventListener("mouseup", onMouseUp);
+  function onPointerUp(e: PointerEvent) {
+    document.removeEventListener("pointermove", onPointerMove);
+    document.removeEventListener("pointerup", onPointerUp);
 
     updateProgress(e.clientX);
     const newTime = duration * percentage;
@@ -56,8 +59,9 @@ export function handleProgressMouseDown(event: MouseEvent, progressWrapper: HTML
     isUserInteracting = false;
   }
 
-  document.addEventListener("mousemove", onMouseMove);
-  document.addEventListener("mouseup", onMouseUp);
+  document.addEventListener("pointermove", onPointerMove);
+  document.addEventListener("pointerup", onPointerUp);
+
   updateProgress(event.clientX);
 }
 

@@ -3,28 +3,38 @@ function parseDuration(duration) {
     return (min || 0) * 60 + (sec || 0);
 }
 export function adaptAudioResponse(raw) {
-    return raw.map((item) => {
+    return raw.reduce((acc, item) => {
         const metadataKeys = Object.keys(item).filter((key) => typeof item[key] === 'object' &&
             item[key] !== null &&
             'visible' in item[key]);
-        return {
+        const site = window.musicPlayer?.siteId;
+        const visible = item[site]?.visible ?? true;
+        if (!visible) {
+            return acc;
+        }
+        const order = Number(item[site]?.order) || 0;
+        const tag = item[site]?.tag || '';
+        const label = item[site]?.label || '';
+        acc.push({
             id: item.id,
-            name: item.name || '',
+            name: label || item.name || '',
             category: item.category || '',
-            duration: item.audioDuration,
+            duration: item.audioDuration || '',
             url: item.url,
-            tags: metadataKeys,
-            metadata: metadataKeys.reduce((acc, key) => {
-                acc[key] = {
+            tag: tag,
+            order: order,
+            metadata: metadataKeys.reduce((metaAcc, key) => {
+                metaAcc[key] = {
                     visible: !!item[key].visible,
                     order: Number(item[key].order) || 0,
                     tag: item[key].tag || '',
                     label: item[key].label || '',
                 };
-                return acc;
+                return metaAcc;
             }, {}),
-        };
-    });
+        });
+        return acc;
+    }, []);
 }
 export function sortAudiosBySite(audios, site) {
     return [...audios].sort((a, b) => {

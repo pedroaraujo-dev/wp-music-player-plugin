@@ -9,9 +9,8 @@ export function bindPlayerProgressUIListeners() {
         }
     });
 
-    document.addEventListener('mousedown', (event) => {
+    document.addEventListener('pointerdown', (event) => {
         const progressWrapper = (event.target as HTMLElement)?.closest('.music-bar__timeline');
-
         if (progressWrapper) {
             handleProgressMouseDown(event, progressWrapper as HTMLElement);
         }

@@ -49,6 +49,8 @@ class SettingsPage
 
         $playerFields = [
             'playlist_title_color' => 'Cor do título da Playlist',
+            'audio_tag_text_color' => 'Cor do texto da Tag na Playlist',
+            'audio_tag_bg_color' => 'Cor de fundo da Tag na Playlist',
             'playlist_bg_color' => 'Cor de fundo da Playlist',
             'audio_text_color' => 'Cor dos textos do áudio na Playlist',
             'audio_bg_color' => 'Cor de fundo do áudio na Playlist',
