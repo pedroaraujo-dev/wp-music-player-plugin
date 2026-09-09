@@ -10,9 +10,8 @@ class SoundBankShortcode
 
     public static function render($atts = [], $content = null)
     {
-        $site = get_option('music_player_site_id', '');
 
-        $soundBanks = SoundBanks::getAll();
+        $soundBanks = SoundBanks::getLibrary();
         
         ob_start();
         include plugin_dir_path(__FILE__) . '/../Views/sound-bank-view.php';

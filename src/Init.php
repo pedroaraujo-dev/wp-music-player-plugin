@@ -12,6 +12,7 @@ class Init
     public static function register()
     {
         Loader::init();
+        \MusicPlayer\Data\PublicPlaylists::register();
         \MusicPlayer\Download\AudioDownload::register();
         
         add_action('init', [self::class, 'init']);

@@ -120,3 +120,7 @@
         overflow-y: auto;
     }
 }
+.audio-track-library[hidden],
+.audio-track-library [hidden] {
+  display: none !important;
+}

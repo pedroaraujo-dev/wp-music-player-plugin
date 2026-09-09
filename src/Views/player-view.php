@@ -5,7 +5,7 @@ $playlist_bg_color    = \MusicPlayer\Admin\Validation::colorOption('playlist_bg_
 
 <div
     class="music-player"
-    data-site="<?php echo esc_attr($site); ?>"
+    data-custom-title="<?php echo $title !== '' ? 'true' : 'false'; ?>"
     data-playlist="<?php echo esc_attr($playlist); ?>"
     style="background: <?php echo esc_attr($playlist_bg_color); ?>;"
 >

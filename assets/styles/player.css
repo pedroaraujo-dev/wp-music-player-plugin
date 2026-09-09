@@ -262,3 +262,7 @@
   border-radius: 2px;
   background: var(--skeleton_element_color);
 }
+
+.music-player[hidden] {
+  display: none !important;
+}

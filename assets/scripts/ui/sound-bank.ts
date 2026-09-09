@@ -1,4 +1,41 @@
+import { IPlaylist } from '../interfaces/playlist.js';
+import { safeAudioURL } from '../utils/html.js';
 export class SoundBankUI {
+  static updateMetadata(playlist: IPlaylist, container: HTMLElement): void {
+    const meta = playlist.metadata;
+    if (!meta) return;
+    const title = container.querySelector<HTMLElement>('.music-player__title');
+    if (title && container.dataset.customTitle !== 'true') title.textContent = typeof meta.name === 'string' ? meta.name : '';
+    const root = container.closest('.audio-track-library');
+    root?.querySelectorAll<HTMLElement>('.audio-track-library__tab-button, .audio-track-library__content-button').forEach(button => {
+      if (button.dataset.id !== playlist.key) return;
+      button.replaceChildren();
+      if (typeof meta.icon === 'string' && meta.icon) {
+        const url = safeAudioURL(meta.icon);
+        if (url.startsWith('https:')) {
+          const image = document.createElement('img'); image.src = url; image.alt = ''; image.width = image.height = 20; button.append(image);
+        } else if (/^[a-zA-Z0-9_ -]+$/.test(meta.icon)) {
+          const icon = document.createElement('span'); icon.className = meta.icon; icon.setAttribute('aria-hidden', 'true'); button.append(icon);
+        }
+      }
+      const name = document.createElement('span'); name.textContent = typeof meta.name === 'string' ? meta.name : button.dataset.title || playlist.key;
+      button.append(name);
+    });
+  }
+  static removePlaylist(key: string, container: HTMLElement): void {
+    const root = container.closest<HTMLElement>('.audio-track-library');
+    if (!root) return;
+    let wasActive = false;
+    root.querySelectorAll<HTMLElement>('.audio-track-library__tab-button, .audio-track-library__content-button').forEach(button => {
+      if (button.dataset.id !== key) return;
+      wasActive = wasActive || button.classList.contains('active');
+      button.hidden = true; button.classList.remove('active'); button.setAttribute('aria-expanded', 'false');
+    });
+    const next = root.querySelector<HTMLElement>('.audio-track-library__tab-button:not([hidden])');
+    if (!next) root.hidden = true;
+    else if (wasActive) next.click();
+  }
+
   private static contentId = 0;
   static init(): void {
     document.querySelectorAll<HTMLElement>('.audio-track-library').forEach(root => {

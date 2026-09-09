@@ -16,18 +16,10 @@ class="audio-track-library" style="background: <?php echo esc_attr($playlist_bg_
                 <div
                     class="audio-track-library__tab-button" 
                     aria-expanded="false" 
-                    data-site="<?php echo esc_attr($site); ?>"
                     data-id="<?= esc_attr($bank['id']); ?>"
                     data-title="<?= esc_attr($bank['name']); ?>"
                 >
-                    <?php if (!empty($bank['icon'])): ?>
-                        <img 
-                            src="<?= esc_url($bank['icon']); ?>" 
-                            alt="<?= esc_attr($bank['name']); ?>" 
-                            width="20"
-                            height="20"
-                        >
-                    <?php endif; ?>
+                    <?php \MusicPlayer\Data\SoundBanks::renderIcon($bank['icon']); ?>
                     <?= esc_html($bank['name']); ?>
                 </div>
             <?php endforeach; ?>
@@ -39,18 +31,10 @@ class="audio-track-library" style="background: <?php echo esc_attr($playlist_bg_
             <div 
                 class="audio-track-library__content-button" 
                 aria-expanded="false" 
-                data-site="<?php echo esc_attr($site); ?>"
                 data-id="<?= esc_attr($bank['id']); ?>"
                 data-title="<?= esc_attr($bank['name']); ?>"
             >
-                <?php if (!empty($bank['icon'])): ?>
-                    <img 
-                        src="<?= esc_url($bank['icon']); ?>" 
-                        alt="<?= esc_attr($bank['name']); ?>" 
-                        width="20"
-                        height="20"
-                    >
-                <?php endif; ?>
+                <?php \MusicPlayer\Data\SoundBanks::renderIcon($bank['icon']); ?>
                 <?= esc_html($bank['name']); ?>
                 </div>
         <?php endforeach; ?>

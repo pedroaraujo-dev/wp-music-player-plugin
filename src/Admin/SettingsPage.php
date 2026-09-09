@@ -20,27 +20,27 @@ class SettingsPage
     public static function registerSettings()
     {
         /* -------------------------
-         *  SEÇÃO: CONFIGURAÇÕES GERAIS
+         *  SEÇÃO: PLAYLISTS EXTERNAS
          * ------------------------- */
 
         add_settings_section(
-            'music_player_general_section',
-            '⚙️ Configurações Gerais',
+            'music_player_playlists_section',
+            'Playlists externas',
             function () {
-                echo '<p>Configurações gerais do plugin Music Player.</p>';
+                echo '<p>Cadastre aqui todas as playlists, tanto as avulsas quanto as que fazem parte do banco de trilhas.</p>';
             },
             'music-player-settings'
         );
 
-        register_setting('music_player_settings', 'music_player_site_id', ['sanitize_callback' => 'sanitize_text_field']);
+        register_setting('music_player_settings', 'sound_banks_data', ['sanitize_callback' => [Validation::class, 'saveBanks']]);
 
         add_settings_field(
-            'music_player_site_id',
-            'Site ID',
-            [self::class, 'renderTextField'],
+            'sound_banks_data',
+            'Playlists externas (JSON)',
+            [self::class, 'renderTextAreaField'],
             'music-player-settings',
-            'music_player_general_section',
-            ['id' => 'music_player_site_id']
+            'music_player_playlists_section',
+            ['id' => 'sound_banks_data', 'label_for' => 'sound_banks_data']
         );
 
         /* -------------------------
@@ -127,7 +127,7 @@ class SettingsPage
             'music_player_soundbanks_section',
             '🎧 Banco de Trilhas',
             function () {
-                echo '<p>Configure o banco de trilhas em formato JSON.</p>';
+                echo '<p>Personalize as cores dos botões do banco de trilhas exibido por <code>[sound_bank]</code>.</p>';
             },
             'music-player-settings'
         );
@@ -150,17 +150,6 @@ class SettingsPage
                 ['id' => $key]
             );
         }
-
-        register_setting('music_player_settings', 'sound_banks_data', ['sanitize_callback' => [Validation::class, 'saveBanks']]);
-
-        add_settings_field(
-            'sound_banks_data',
-            'Banco de Trilhas (JSON)',
-            [self::class, 'renderTextAreaField'],
-            'music-player-settings',
-            'music_player_soundbanks_section',
-            ['id' => 'sound_banks_data']
-        );
 
         /* -------------------------
         *  SECTION: PLAYER SKELETON
@@ -227,11 +216,15 @@ class SettingsPage
                 id='{$id}' 
                 name='{$id}' 
                 rows='8' 
-                cols='60'
-                placeholder='[{\"id\":\"rock\",\"name\":\"Rock\",\"icon\":\"rock.svg\"}]'
+                cols='80'
+                class='large-text code'
+                spellcheck='false'
+                placeholder='[{\"id\":\"rock\",\"url\":\"https://storage.googleapis.com/bucket/playlists/site/playlist.json\"}]'
             >{$value}</textarea>
-            <p class='description'>Insira os dados em formato JSON válido.</p>
         ";
+        if ($id === 'sound_banks_data') {
+            include __DIR__ . '/../Views/playlist-settings-help.php';
+        }
     }
 
     public static function renderTextField($args)

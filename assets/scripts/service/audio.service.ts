@@ -1,41 +1,34 @@
-import { updateAudios, playerState, updatePlaylistAudios } from '../states/player-state.js';
+import { playerState } from '../states/player-state.js';
 import { IPlaylist } from '../interfaces/playlist.js';
-import { adaptAudioResponse, IAudioItem, sortAudiosBySite } from '../interfaces/audio-item.js';
+import { adaptAudioResponse, IAudioItem } from '../interfaces/audio-item.js';
 import { renderPlaylistItemHTML } from '../ui/templates/playlist-item.js';
 
 export class AudioService {
   static async fetchAudios(): Promise<void> {
 
-    const site = (window as any).musicPlayer?.siteId;
-    const playlists = playerState.playlists as IPlaylist[];
-  
-    const results: IPlaylist[] = await Promise.all(
-      playlists.map(async (data) => {
-        try {
-          const res = await fetch(
-            `https://conceitovoz.com.br/playlist-directory/get-content.php?site=${site}&playlist=${data.key}`, {
-              headers: { 'Name': data.key}
-            }
-          );
-          
-          if (!res.ok) return { ...data, audios: [], rendered: false };
-
-          
-          const raw: any[] = await res.json();
-          const audios = adaptAudioResponse(raw);
-          const sortedAudios = sortAudiosBySite(audios, site);
-          updatePlaylistAudios(data.key, sortedAudios);
-          return { ...data, sortedAudios, rendered: false };
-        } catch (error) {
-          console.error((error as Error).message);
-          return { ...data, audios: [], rendered: false };
-        }
-      })
-    );
-  
-    const allAudios = results.flatMap((r) => r.audios);
-    
-    updateAudios(allAudios);
+    const pending = playerState.playlists.filter(p => !p.rendered);
+    await Promise.all([...new Set(pending.map(p => p.key))].map(async key => {
+      const targets = pending.filter(p => p.key === key);
+      try {
+        if (!window.musicPlayer?.ajaxUrl) throw new Error('Configuração do player indisponível.');
+        const url = new URL(window.musicPlayer.ajaxUrl, window.location.href);
+        url.searchParams.set('action', 'music_player_playlist');
+        url.searchParams.set('playlist', key);
+        const response = await fetch(url.href, {cache: 'no-store'});
+        const result = await response.json();
+        if (!response.ok || !result.success) throw new Error(result?.data?.message || 'Playlist temporariamente indisponível.');
+        const audios = result.data === null ? [] : adaptAudioResponse(result.data);
+        targets.forEach(p => {
+          p.audios = audios;
+          p.status = result.data === null ? 'missing' : 'ready';
+          p.metadata = result.data?.playlist;
+          p.error = undefined;
+        });
+      } catch (error) {
+        targets.forEach(p => { p.audios = []; p.status = 'error'; p.error = (error as Error).message; });
+      }
+    }));
+    playerState.audios = [...new Map(playerState.playlists.flatMap(p => p.audios).map(a => [a.id, a])).values()];
   }
 
   static async downloadAudio(audio: IAudioItem): Promise<boolean> {
@@ -98,7 +91,8 @@ export class AudioService {
         audio.tag,
         audio.duration,
         index + 1,
-        audio.url
+        audio.url,
+        audio.label
       )
     );
 

@@ -1,3 +1,4 @@
+import { LabelUI } from "../ui/labels.js";
 import { UIListeners } from "../controls/listeners/index.js";
 import { AudioService } from "../service/audio.service.js";
 import { AudioUI } from "../ui/audio.js";
@@ -21,11 +22,11 @@ export class PlayerFlowController {
             PlaylistContainerUI.renderLoading();
             await AudioService.fetchAudios();
             await PlaylistContainerUI.renderAll();
-            PlaylistContainerUI.clearAllLoadings();
+            LabelUI.sync();
 
         }).catch((err) => {
-            
-        });
+            console.error(err);
+        }).finally(() => PlaylistContainerUI.clearAllLoadings());
 
         await this.queue;
     }

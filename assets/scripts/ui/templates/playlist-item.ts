@@ -1,5 +1,7 @@
+import { IAudioLabel } from "../../interfaces/audio-item.js";
+import { renderLabelHTML } from "../labels.js";
 import { escapeHTML, safeAudioURL } from "../../utils/html.js";
-export function renderPlaylistItemHTML(id: string, title: string, tag: string, duration: string, order: number, url?: string) {
+export function renderPlaylistItemHTML(id: string, title: string, tag: string, duration: string, order: number, url?: string, label?: IAudioLabel | null) {
     return `
         <div 
             class="music-player__item" 
@@ -29,7 +31,7 @@ export function renderPlaylistItemHTML(id: string, title: string, tag: string, d
                     <div class="music-player__track-position">${escapeHTML(order)}</div>
                     <div class="music-player__track-separator">-</div>
                     <div class="music-player__track-title">${escapeHTML(title)}</div>
-                    ${tag ? `<div class="music-player__track-tag">${escapeHTML(tag)}</div>` : ''}
+                    <span data-label-slot>${renderLabelHTML(label, tag)}</span>
                 </div>
             </div>
 

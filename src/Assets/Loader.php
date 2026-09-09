@@ -38,7 +38,7 @@ class Loader
             'music-player-sound-bank-style',
             $base_css . 'sound-bank.css',
             [],
-            filemtime($player_css),
+            filemtime($sound_bank_css),
             'all'
         );
 
@@ -65,14 +65,13 @@ class Loader
             return $tag;
         }, 10, 3);
 
-        // Inclui o site id para o script
+        // Configuração dos endpoints locais para o player
         wp_localize_script(
             'music-player-script',
             'musicPlayer',
             [
                 'ajaxUrl' => admin_url('admin-ajax.php'),
                 'nonce'   => wp_create_nonce('music_player_nonce'),
-                'siteId'  => get_option('music_player_site_id'),
             ]
         );
     }

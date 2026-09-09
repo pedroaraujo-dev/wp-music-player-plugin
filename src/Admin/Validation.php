@@ -29,6 +29,13 @@ class Validation
         return self::colorOption($key);
     }
 
+    public static function playlistURL($value): bool
+    {
+        return is_string($value) && filter_var($value, FILTER_VALIDATE_URL)
+            && strtolower((string) parse_url($value, PHP_URL_SCHEME)) === 'https'
+            && !parse_url($value, PHP_URL_USER) && !parse_url($value, PHP_URL_PASS);
+    }
+
     public static function banks($value): ?array
     {
         if (!is_string($value)) return null;
@@ -38,16 +45,21 @@ class Validation
         $result = [];
         $ids = [];
         foreach ($banks as $bank) {
-            if (!is_array($bank) || !isset($bank['id'], $bank['name']) || !is_string($bank['id']) || !is_string($bank['name'])) return null;
+            if (!is_array($bank) || !isset($bank['id']) || !is_string($bank['id']) || (isset($bank['name']) && !is_string($bank['name']))) return null;
             $id = sanitize_text_field($bank['id']);
-            $name = sanitize_text_field($bank['name']);
+            $name = sanitize_text_field($bank['name'] ?? $bank['id']);
             if ($id === '' || $name === '' || in_array($id, $ids, true)) return null;
             $icon = $bank['icon'] ?? '';
             if (!is_string($icon)) return null;
-            $safeIcon = esc_url_raw($icon, ['http', 'https']);
+            $safeIcon = preg_match('/^[a-zA-Z0-9_-]+(?: [a-zA-Z0-9_-]+)*$/', $icon) ? $icon : esc_url_raw($icon, ['http', 'https']);
             if ($icon !== '' && $safeIcon === '') return null;
+            $url = $bank['url'] ?? '';
+            if ($url !== '' && !self::playlistURL($url)) return null;
+            if (array_key_exists('sound_bank', $bank) && !is_bool($bank['sound_bank'])) return null;
             $ids[] = $id;
             $result[] = ['id' => $id, 'name' => $name, 'icon' => $safeIcon];
+            if ($url !== '') $result[count($result) - 1]['url'] = $url;
+            if (array_key_exists('sound_bank', $bank)) $result[count($result) - 1]['sound_bank'] = $bank['sound_bank'];
         }
         return $result;
     }
@@ -55,8 +67,8 @@ class Validation
     public static function saveBanks($value): string
     {
         $banks = self::banks($value);
-        if ($banks !== null) return wp_json_encode($banks, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        add_settings_error('sound_banks_data', 'invalid_banks', 'JSON inválido. Informe uma lista com id único, name e icon opcional.');
+        if ($banks !== null && count(array_filter($banks, function ($bank) { return empty($bank['url']); })) === 0) return wp_json_encode($banks, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+        add_settings_error('sound_banks_data', 'invalid_banks', 'JSON inválido. Informe uma lista com id único e url HTTPS completa. name e icon são opcionais; sound_bank deve ser true ou false, sem aspas.');
         return wp_json_encode(self::banks(get_option('sound_banks_data', '[]')) ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

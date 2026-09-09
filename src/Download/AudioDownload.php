@@ -12,34 +12,13 @@ class AudioDownload
 
     public static function resolveAudio(string $playlist, string $id)
     {
-        $site = (string) get_option('music_player_site_id', '');
-        if ($site === '' || $playlist === '' || $id === '') {
-            return new \WP_Error('invalid_request', 'Áudio ou playlist não informado.');
-        }
-        $response = wp_safe_remote_get(add_query_arg([
-            'site' => $site,
-            'playlist' => $playlist,
-        ], 'https://conceitovoz.com.br/playlist-directory/get-content.php'), [
-            'timeout' => 20,
-            'limit_response_size' => 2 * 1024 * 1024,
-            'headers' => ['Name' => $playlist],
-        ]);
-        if (is_wp_error($response) || wp_remote_retrieve_response_code($response) !== 200) {
-            return new \WP_Error('upstream_error', 'Não foi possível consultar a playlist.');
-        }
-        $items = json_decode(wp_remote_retrieve_body($response), true);
-        if (!is_array($items)) {
-            return new \WP_Error('upstream_error', 'Resposta inválida da playlist.');
-        }
-        foreach ($items as $item) {
-            if (!is_array($item) || (string) ($item['id'] ?? '') !== $id) continue;
-            if (!($item[$site]['visible'] ?? true)) break;
-            $url = $item['url'] ?? '';
-            if (!is_string($url) || !wp_http_validate_url($url)) break;
-            return [
-                'url' => $url,
-                'name' => (string) ($item[$site]['label'] ?? $item['name'] ?? 'audio'),
-            ];
+        $data = \MusicPlayer\Data\PublicPlaylists::read($playlist);
+        if (is_wp_error($data)) return $data;
+        if ($data !== null) foreach ($data['audio_assets'] as $item) {
+            $url = $item['file_url'];
+            if (\MusicPlayer\Data\PublicPlaylists::audioId($playlist, $url) !== $id) continue;
+            if (!wp_http_validate_url($url)) break;
+            return ['url' => $url, 'name' => is_string($item['name'] ?? null) ? $item['name'] : 'audio'];
         }
         return new \WP_Error('not_found', 'Áudio não encontrado ou indisponível.');
     }
@@ -54,7 +33,7 @@ class AudioDownload
         $id = isset($_POST['id']) && is_string($_POST['id']) ? sanitize_text_field(wp_unslash($_POST['id'])) : '';
         $audio = self::resolveAudio($playlist, $id);
         if (is_wp_error($audio)) {
-            wp_send_json_error(['message' => $audio->get_error_message()], $audio->get_error_code() === 'upstream_error' ? 502 : 404);
+            wp_send_json_error(['message' => $audio->get_error_message()], $audio->get_error_code() === 'not_found' ? 404 : 502);
             return;
         }
         require_once ABSPATH . 'wp-admin/includes/file.php';

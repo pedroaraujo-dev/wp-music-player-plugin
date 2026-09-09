@@ -5,4 +5,7 @@ export interface IPlaylist {
     container: HTMLElement;
     key: string;
     rendered: boolean;
+    status?: 'ready' | 'missing' | 'error';
+    error?: string;
+    metadata?: import('./audio-item.js').IPublicPlaylist['playlist'];
 }
