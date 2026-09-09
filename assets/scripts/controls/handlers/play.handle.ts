@@ -3,7 +3,7 @@ import { AudioUI } from "../../ui/audio.js";
 import { FixedBarUI } from "../../ui/fixed-bar.js";
 import { PlaylistItemUI } from "../../ui/playlist-item.js";
 import { handlePause } from "./pause.handle.js";
-import { handleAudioProgress } from "./progress.handle.js";
+
 
 export function handleItemPlay(
   musicPlayerItemId: string | null
@@ -29,7 +29,7 @@ export function handleItemPlay(
   PlaylistItemUI.play(musicPlayerItemId);
   FixedBarUI.play();
   AudioUI.play();  
-  handleAudioProgress();
+
 }
 
 export function handleBarPlay() {

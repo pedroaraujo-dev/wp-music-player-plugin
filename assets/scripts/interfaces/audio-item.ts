@@ -38,7 +38,7 @@ export function adaptAudioResponse(raw: any[]): IAudioItem[] {
     acc.push({
       id: item.id,
       name: label || item.name || '',
-      category: item.category || '',
+      category: formatCategoryName(item.category),
       duration: item.audioDuration || '',
       url: item.url,
       tag: tag,
@@ -55,6 +55,27 @@ export function adaptAudioResponse(raw: any[]): IAudioItem[] {
     });
     return acc;
   }, []);
+}
+
+export function formatCategoryName(category?: string): string {
+  if (!category) return '';
+
+  switch (category) {
+    case 'Banco de Vozes Masculinas':
+      return 'Vozes Masculinas';
+    case 'Banco de Vozes Femininas':
+      return 'Vozes Femininas';
+    case 'Banco de Vozes Institucionais':
+      return 'Vozes Institucionais';
+    case 'Esperas Telefônicas - Vozes':
+      return 'Vozes para URA';
+    case 'Esperas Telefônicas - Trabalhos Feitos':
+      return 'Demonstrativos de URA';
+    case 'Esperas Telefônicas - Fundos Musicais':
+      return 'Fundos Musicais para URA';
+  }
+
+  return category;
 }
 
 export function sortAudiosBySite(audios: IAudioItem[], site: string): IAudioItem[] {

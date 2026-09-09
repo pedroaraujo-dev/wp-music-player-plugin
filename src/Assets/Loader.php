@@ -65,16 +65,6 @@ class Loader
             return $tag;
         }, 10, 3);
 
-        // Expõe a URL do AJAX e nonce para o script
-        wp_localize_script(
-            'music-player-script',
-            'musicPlayer',
-            [
-                'ajaxUrl' => admin_url('admin-ajax.php'),
-                'nonce'   => wp_create_nonce('music_player_nonce'),
-            ]
-        );
-
         // Inclui o site id para o script
         wp_localize_script(
             'music-player-script',
@@ -137,7 +127,7 @@ class Loader
 
         $cssVariables = '';
         foreach ($cssFields as $key) {
-            $value = get_option($key);
+            $value = \MusicPlayer\Admin\Validation::colorOption($key);
             if ($value !== false && $value !== '') {
                 $cssVariables .= "--{$key}: {$value};\n";
             }

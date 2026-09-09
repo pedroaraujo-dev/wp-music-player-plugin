@@ -1,11 +1,11 @@
 <?php
 
-$fixed_bar_bg_color              = get_option('fixed_bar_bg_color', '#669bbc');
-$fixed_bar_text_color            = get_option('fixed_bar_text_color', '#003049');
-$fixed_bar_button_icon_color     = get_option('fixed_bar_button_icon_color', '#003049');
-$fixed_bar_navigation_icon_color = get_option('fixed_bar_navigation_icon_color', '#003049');
-$fixed_bar_button_color          = get_option('fixed_bar_button_color', '#0077b6');
-$fixed_bar_close_icon_color      = get_option('fixed_bar_close_icon_color', '#003049');
+$fixed_bar_bg_color              = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_bg_color', '#669bbc');
+$fixed_bar_text_color            = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_text_color', '#003049');
+$fixed_bar_button_icon_color     = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_button_icon_color', '#003049');
+$fixed_bar_navigation_icon_color = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_navigation_icon_color', '#003049');
+$fixed_bar_button_color          = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_button_color', '#0077b6');
+$fixed_bar_close_icon_color      = \MusicPlayer\Admin\Validation::colorOption('fixed_bar_close_icon_color', '#003049');
 
 ?>
 

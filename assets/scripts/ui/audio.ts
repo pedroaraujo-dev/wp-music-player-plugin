@@ -1,3 +1,5 @@
+import { handleAudioProgress } from "../controls/handlers/progress.handle.js";
+import { safeAudioURL } from "../utils/html.js";
 import { handleBarNext } from "../controls/handlers/next.handle.js";
 
 export class AudioUI {
@@ -5,6 +7,7 @@ export class AudioUI {
         const audio = document.querySelector('#audio-player') as HTMLAudioElement | null;
         if (!audio) return;
 
+        handleAudioProgress();
         audio.removeEventListener("ended", this.handleNext);
         audio.addEventListener("ended", this.handleNext);
     }
@@ -24,7 +27,7 @@ export class AudioUI {
     static updateSource(sourceUrl: string) {
         const audio = document.querySelector('#audio-player') as HTMLAudioElement | null;
         if (!audio) return;
-        audio.src = sourceUrl;
+        audio.src = safeAudioURL(sourceUrl);
         audio.load();
     }
 
@@ -41,7 +44,7 @@ export class AudioUI {
 
     static getDuration(): number {
         const audio = document.querySelector('#audio-player') as HTMLAudioElement | null;
-        return audio ? audio.duration || 0 : 0;
+        return audio && Number.isFinite(audio.duration) ? audio.duration : 0;
     }
 
     static setCurrentTime(time: number) {

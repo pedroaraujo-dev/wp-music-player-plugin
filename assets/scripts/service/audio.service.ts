@@ -40,13 +40,17 @@ export class AudioService {
 
   static async downloadAudio(audio: IAudioItem): Promise<boolean> {
 
-    const audioLink = audio.url;
+    const playlist = playerState.playlists.find(p => p.audios.some(item => item.id === audio.id));
+    const config = window.musicPlayer;
+    if (!playlist || !config?.ajaxUrl || !config.nonce) throw new Error("Configuração de download indisponível.");
     const audioName = audio.name || "audio";
 
-    const postUrl = "/download-audio.php";
+    const postUrl = config.ajaxUrl;
     const postData = new URLSearchParams({
-      url: audioLink,
-      audioname: audioName
+      action: 'music_player_download',
+      nonce: config.nonce,
+      playlist: playlist.key,
+      id: audio.id
     });
 
     try {
@@ -59,7 +63,8 @@ export class AudioService {
       });
 
       if (!response.ok) {
-        throw new Error(`Erro HTTP: ${response.status}`);
+        const error = await response.json().catch(() => null);
+        throw new Error(error?.data?.message || `Erro HTTP: ${response.status}`);
       }
 
       const blob = await response.blob();
@@ -70,9 +75,11 @@ export class AudioService {
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement("a");
       a.href = url;
-      a.download = `${audioName}.mp3`;
+      const filename = response.headers.get("Content-Disposition")?.match(/filename\*=UTF-8''([^;]+)/i)?.[1];
+      a.download = filename ? decodeURIComponent(filename) : `${audioName}.mp3`;
       document.body.appendChild(a);
       a.click();
+      a.remove();
 
       setTimeout(() => window.URL.revokeObjectURL(url), 1000);
 

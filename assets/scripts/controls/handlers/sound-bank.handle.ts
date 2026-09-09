@@ -2,28 +2,28 @@ import { PlaylistContainerUI } from "../../ui/playlist-container.js";
 import { SoundBankUI } from "../../ui/sound-bank.js";
 import { renderPlaylistHTML } from "../../ui/templates/playlist.js";
 
-export function handleSoundBankButtonClick(soundBankId: string, soundBankTitle: string): void {
+export function handleSoundBankButtonClick(soundBankId: string, soundBankTitle: string, root: ParentNode = document): void {
 
-    const activeTab = document.querySelector<HTMLElement>(".audio-track-library__tab-button.active");
+    const activeTab = root.querySelector<HTMLElement>(".audio-track-library__tab-button.active");
     const activeTabId = activeTab?.getAttribute("data-id") ?? null;
 
     if (activeTabId && activeTabId === soundBankId) {
         return;
     }
 
-    SoundBankUI.closeAllTabs();
+    SoundBankUI.closeAllTabs(root);
 
-    const content = document.querySelector<HTMLDivElement>(`[data-playlist="${soundBankId}"]`);
+    const content = SoundBankUI.findContent(soundBankId, root);
 
     if (!content) {
-        fetchPlayer(soundBankId, soundBankTitle);
+        fetchPlayer(soundBankId, soundBankTitle, root);
         PlaylistContainerUI.syncFromDOM();
     }
 
-    SoundBankUI.setTabState(soundBankId);
+    SoundBankUI.setTabState(soundBankId, root);
 }
 
-export function fetchPlayer(playlistId: string, title: string): void {
+export function fetchPlayer(playlistId: string, title: string, root: ParentNode = document): void {
     const playerHTML = renderPlaylistHTML(playlistId, title);
-    SoundBankUI.renderPlayer(playerHTML, playlistId); 
+    SoundBankUI.renderPlayer(playerHTML, playlistId, root);
 }

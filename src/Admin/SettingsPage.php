@@ -32,7 +32,7 @@ class SettingsPage
             'music-player-settings'
         );
 
-        register_setting('music_player_settings', 'music_player_site_id');
+        register_setting('music_player_settings', 'music_player_site_id', ['sanitize_callback' => 'sanitize_text_field']);
 
         add_settings_field(
             'music_player_site_id',
@@ -71,7 +71,7 @@ class SettingsPage
         );
 
         foreach ($playerFields as $key => $label) {
-            register_setting('music_player_settings', $key);
+            register_setting('music_player_settings', $key, ['sanitize_callback' => function ($value) use ($key) { return Validation::saveColor($value, $key); }]);
             add_settings_field(
                 $key,
                 $label,
@@ -108,7 +108,7 @@ class SettingsPage
         );
 
         foreach ($barFields as $key => $label) {
-            register_setting('music_player_settings', $key);
+            register_setting('music_player_settings', $key, ['sanitize_callback' => function ($value) use ($key) { return Validation::saveColor($value, $key); }]);
             add_settings_field(
                 $key,
                 $label,
@@ -140,7 +140,7 @@ class SettingsPage
         ];
 
         foreach ($soundBankFields as $key => $label) {
-            register_setting('music_player_settings', $key);
+            register_setting('music_player_settings', $key, ['sanitize_callback' => function ($value) use ($key) { return Validation::saveColor($value, $key); }]);
             add_settings_field(
                 $key,
                 $label,
@@ -151,7 +151,7 @@ class SettingsPage
             );
         }
 
-        register_setting('music_player_settings', 'sound_banks_data');
+        register_setting('music_player_settings', 'sound_banks_data', ['sanitize_callback' => [Validation::class, 'saveBanks']]);
 
         add_settings_field(
             'sound_banks_data',
@@ -183,7 +183,7 @@ class SettingsPage
         ];
 
         foreach ($skeletonFields as $key => $label) {
-            register_setting('music_player_settings', $key);
+            register_setting('music_player_settings', $key, ['sanitize_callback' => function ($value) use ($key) { return Validation::saveColor($value, $key); }]);
             add_settings_field(
                 $key,
                 $label,
@@ -198,7 +198,7 @@ class SettingsPage
     public static function renderColorField($args)
     {
         $id = $args['id'];
-        $value = get_option($id, 'rgba(0, 0, 0, 1)');
+        $value = esc_attr(get_option($id, 'rgba(0, 0, 0, 1)'));
 
         echo "
             <input 
@@ -221,7 +221,7 @@ class SettingsPage
     public static function renderTextAreaField($args)
     {
         $id = $args['id'];
-        $value = get_option($id, '');
+        $value = esc_textarea(get_option($id, ''));
         echo "
             <textarea 
                 id='{$id}' 

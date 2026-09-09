@@ -12,7 +12,7 @@ export function bindSoundBankUIListeners() {
 
         if (!soundBankId || !soundBankTitle) return;
 
-        button.addEventListener("click", () => handleSoundBankButtonClick(soundBankId, soundBankTitle));
+        button.addEventListener("click", () => handleSoundBankButtonClick(soundBankId, soundBankTitle, button.closest(".audio-track-library") || document));
     });
 
     accordionButtons.forEach((button) => {
@@ -21,6 +21,6 @@ export function bindSoundBankUIListeners() {
 
         if (!soundBankId || !soundBankTitle) return;
 
-        button.addEventListener("click", () => handleSoundBankButtonClick(soundBankId, soundBankTitle));
+        button.addEventListener("click", () => handleSoundBankButtonClick(soundBankId, soundBankTitle, button.closest(".audio-track-library") || document));
     });
 }

@@ -1,6 +1,6 @@
 <?php
-$playlist_title_color = get_option('playlist_title_color', '#003049');
-$playlist_bg_color    = get_option('playlist_bg_color', '#f3f3f3');
+$playlist_title_color = \MusicPlayer\Admin\Validation::colorOption('playlist_title_color', '#003049');
+$playlist_bg_color    = \MusicPlayer\Admin\Validation::colorOption('playlist_bg_color', '#f3f3f3');
 ?>
 
 <div

@@ -1,11 +1,12 @@
+import { escapeHTML, safeAudioURL } from "../../utils/html.js";
 export function renderPlaylistItemHTML(id: string, title: string, tag: string, duration: string, order: number, url?: string) {
     return `
         <div 
             class="music-player__item" 
-            data-index="${order}"
-            data-id="${id}"
+            data-index="${escapeHTML(order)}"
+            data-id="${escapeHTML(id)}"
             style="background: var(--audio_bg_color); color: var(--audio_text_color);"
-            data-url="${url}"
+            data-url="${escapeHTML(safeAudioURL(url))}"
         >
             <div class="music-player__item-left">
                 <div 
@@ -25,20 +26,20 @@ export function renderPlaylistItemHTML(id: string, title: string, tag: string, d
                 </div>
 
                 <div class="music-player__track-info">
-                    <div class="music-player__track-position">${order}</div>
+                    <div class="music-player__track-position">${escapeHTML(order)}</div>
                     <div class="music-player__track-separator">-</div>
-                    <div class="music-player__track-title">${title}</div>
-                    ${tag ? `<div class="music-player__track-tag">${tag}</div>` : ''}
+                    <div class="music-player__track-title">${escapeHTML(title)}</div>
+                    ${tag ? `<div class="music-player__track-tag">${escapeHTML(tag)}</div>` : ''}
                 </div>
             </div>
 
             <div class="music-player__item-right">
-                <div class="music-player__duration">${duration}</div>
+                <div class="music-player__duration">${escapeHTML(duration)}</div>
 
                 <div 
                     class="music-player__download"
                     style="color: var(--download_icon_color);"
-                    data-url="${url}"
+                    data-url="${escapeHTML(safeAudioURL(url))}"
                 >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-cloud-download-icon lucide-cloud-download"><path d="M12 13v8l-4-4"/><path d="m12 21 4-4"/><path d="M4.393 15.269A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.436 8.284"/></svg>
                 </div>

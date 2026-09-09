@@ -9,8 +9,8 @@ const playerState = {
 }
 
 export function updatePlaylists(newPlaylists: IPlaylist[]) {
-    const keys = new Set(playerState.playlists.map(p => p.key));
-    const uniqueNew = newPlaylists.filter(p => !keys.has(p.key));
+    const keys = new Set(playerState.playlists.map(p => p.container));
+    const uniqueNew = newPlaylists.filter(p => !keys.has(p.container));
 
     if (uniqueNew.length > 0) {
         playerState.playlists.push(...uniqueNew);
@@ -19,13 +19,16 @@ export function updatePlaylists(newPlaylists: IPlaylist[]) {
 }
 
 export function updatePlaylistAudios(playlistKey: string, audios: IAudioItem[]) {
-    const playlist = playerState.playlists.find(p => p.key === playlistKey);
-    if (playlist) playlist.audios = audios;
+    playerState.playlists.filter(p => p.key === playlistKey).forEach(playlist => { playlist.audios = audios; });
 }
 
 export function updateAudios(newAudios: IAudioItem[]) {
     const ids = new Set(playerState.audios.map(a => a.id));
-    const uniqueNew = newAudios.filter(a => !ids.has(a.id));
+    const uniqueNew = newAudios.filter(a => {
+        if (ids.has(a.id)) return false;
+        ids.add(a.id);
+        return true;
+    });
     playerState.audios.push(...uniqueNew);
 }
 

@@ -4,7 +4,7 @@ import { renderPlaylistItemSkeletonHTML } from "./templates/playlist-item-skelet
 
 declare global {
   interface Window {
-    musicPlayer?: { ajaxUrl?: string };
+    musicPlayer?: { ajaxUrl?: string; nonce?: string; siteId?: string };
   }
 }
 
@@ -26,7 +26,7 @@ export class PlaylistContainerUI {
         playlistBox.innerHTML = html;
         playlist.rendered = true;
       } catch (error) {
-        playlistBox.innerHTML = `<p>${(error as Error).message}</p>`;
+        playlistBox.textContent = (error as Error).message;
         playlist.rendered = false;
       }
     }

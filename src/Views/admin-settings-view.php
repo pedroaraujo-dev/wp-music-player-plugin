@@ -1,5 +1,6 @@
 <div class="wrap">
     <h1>Configurações do Music Player</h1>
+    <?php settings_errors(); ?>
     <form method="post" action="options.php">
         <?php
             settings_fields('music_player_settings');

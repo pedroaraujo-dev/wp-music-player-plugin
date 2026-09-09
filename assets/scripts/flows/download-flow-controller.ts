@@ -13,6 +13,7 @@ export class DownloadFlowController {
             await AudioService.downloadAudio(audio);
         } catch (error) {
             console.error("Download error:", (error as Error).message);
+            window.alert((error as Error).message);
         } finally {  
             PlaylistItemUI.endDownload(audio.id);
             FixedBarUI.endDownload();

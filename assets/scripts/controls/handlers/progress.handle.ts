@@ -8,12 +8,13 @@ export function handleProgressClick(event: MouseEvent, progressWrapper: HTMLElem
 }
 
 export function handleProgressMouseDown(event: PointerEvent, progressWrapper: HTMLElement) {
+  if (isUserInteracting || AudioUI.getDuration() <= 0) return;
   event.preventDefault();
 
   const rect = progressWrapper.getBoundingClientRect();
   const progressBar = document.querySelector<HTMLElement>(".music-bar__timeline-fill");
-  const currentTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--current");
-  const totalTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--total");
+  const currentTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--current");
+  const totalTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--total");
   const duration = AudioUI.getDuration();
 
   let percentage = 0;
@@ -56,9 +57,17 @@ export function handleProgressMouseDown(event: PointerEvent, progressWrapper: HT
     const newTime = duration * percentage;
     AudioUI.setCurrentTime(newTime);
 
+    document.removeEventListener("pointercancel", onPointerCancel);
     isUserInteracting = false;
   }
 
+  function onPointerCancel() {
+    document.removeEventListener('pointermove', onPointerMove);
+    document.removeEventListener('pointerup', onPointerUp);
+    document.removeEventListener('pointercancel', onPointerCancel);
+    isUserInteracting = false;
+  }
+  document.addEventListener('pointercancel', onPointerCancel);
   document.addEventListener("pointermove", onPointerMove);
   document.addEventListener("pointerup", onPointerUp);
 
@@ -79,8 +88,8 @@ function updateProgressFromEvent(event: MouseEvent, progressWrapper: HTMLElement
   const duration = AudioUI.getDuration();
   if (duration > 0) {
     const newTime = duration * percentage;
-    const currentTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--current");
-    const totalTimeDisplay = progressWrapper.querySelector<HTMLElement>(".music-bar__time--total");
+    const currentTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--current");
+    const totalTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--total");
 
     if (setAudioTime) AudioUI.setCurrentTime(newTime);
     if (currentTimeDisplay) currentTimeDisplay.textContent = formatTime(newTime);
@@ -88,56 +97,25 @@ function updateProgressFromEvent(event: MouseEvent, progressWrapper: HTMLElement
   }
 }
 
+const initializedAudios = new WeakSet<HTMLAudioElement>();
+
 export function handleAudioProgress() {
-  const progressWrapper = document.querySelector<HTMLElement>(".music-bar__timeline");
-  const audioElement = document.querySelector<HTMLAudioElement>("#audio-player");
-  if (!audioElement || !progressWrapper) return;
-
-  const progressBar = document.querySelector<HTMLElement>(".music-bar__timeline-fill");
-  const currentTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--current");
-  const totalTimeDisplay = document.querySelector<HTMLElement>(".music-bar__time--total");
-
-  if (!progressBar || !currentTimeDisplay || !totalTimeDisplay) return;
-
-  audioElement.addEventListener("loadedmetadata", () => {
-    const duration = audioElement.duration;
-    if (!isNaN(duration)) {
-      totalTimeDisplay.textContent = formatTime(duration);
-    }
-  });
-
-  function updateProgressBar() {
-    if (isUserInteracting) {
-      requestAnimationFrame(updateProgressBar);
-      return;
-    }
-
-    if (!audioElement || audioElement.paused || audioElement.ended) {
-      requestAnimationFrame(updateProgressBar);
-      return;
-    }
-
-    const currentTime = audioElement.currentTime;
-    const duration = audioElement.duration;
-
-    if (!isNaN(duration) && duration > 0) {
-      const progressPercent = currentTime / duration;
-      if (!progressBar || !currentTimeDisplay) return;
-      progressBar.style.setProperty("--width", `${progressPercent * 100}%`);
-      currentTimeDisplay.textContent = formatTime(currentTime);
-    }
-
-    requestAnimationFrame(updateProgressBar);
-  }
-
-  audioElement.addEventListener("play", () => {
-    requestAnimationFrame(updateProgressBar);
-  });
-
-  audioElement.addEventListener("ended", () => {
-    progressBar.style.setProperty("--width", "0%");
-    currentTimeDisplay.textContent = "0:00";
-  });
+  const audio = document.querySelector<HTMLAudioElement>('#audio-player');
+  const bar = document.querySelector<HTMLElement>('.music-bar__timeline-fill');
+  const current = document.querySelector<HTMLElement>('.music-bar__time--current');
+  const total = document.querySelector<HTMLElement>('.music-bar__time--total');
+  if (!audio || !bar || !current || !total || initializedAudios.has(audio)) return;
+  initializedAudios.add(audio);
+  const update = () => {
+    if (isUserInteracting) return;
+    const duration = Number.isFinite(audio.duration) ? audio.duration : 0;
+    const time = Number.isFinite(audio.currentTime) ? audio.currentTime : 0;
+    bar.style.setProperty('--width', `${duration > 0 ? time / duration * 100 : 0}%`);
+    current.textContent = formatTime(time);
+    total.textContent = formatTime(duration);
+  };
+  ['timeupdate', 'loadedmetadata', 'seeked', 'emptied', 'ended'].forEach(event => audio.addEventListener(event, update));
+  update();
 }
 
 function formatTime(time: number): string {
