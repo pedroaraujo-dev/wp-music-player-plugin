@@ -92,7 +92,8 @@ export class AudioService {
         audio.duration,
         index + 1,
         audio.url,
-        audio.label
+        audio.label,
+        audio.premium
       )
     );
 

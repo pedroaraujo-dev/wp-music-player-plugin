@@ -23,6 +23,8 @@ test('dados externos são texto, atributos preservados e protocolos inseguros bl
   const dom=setup(), w=dom.window, api=w.review;
   const payload='<img src=x onerror=alert(1)>';
   const id='a"[x]';
+  const emptyPremium = api.renderPlaylistItemHTML(id, 'Faixa', '', '1:05', 1, undefined, null, {description: '   '});
+  assert.doesNotMatch(emptyPremium, /music-player__track-premium/);
   w.document.body.innerHTML=api.renderPlaylistItemHTML(id,payload,payload,'1:05',1,'javascript:alert(1)');
   assert.equal(w.document.querySelector('img'),null);
   assert.equal(w.document.querySelector('.music-player__track-title').textContent,payload);
@@ -81,13 +83,16 @@ test('bundle publicado carrega playlist, reproduz e pausa com dados controlados'
   const dom = new JSDOM('<div class="music-player" data-playlist="rock"><div class="music-player__playlist"></div></div><audio id="audio-player"></audio><div class="music-bar music-bar--hidden"><div class="music-bar__button--play"></div><div class="music-bar__button--pause"></div><div class="music-bar__track"></div><div class="music-bar__category"></div><div class="music-bar__timeline-fill"></div><div class="music-bar__time--current"></div><div class="music-bar__time--total"></div></div>',{url:'http://localhost/g-playlist/',runScripts:'outside-only'});
   const w=dom.window;let plays=0,pauses=0;
   w.musicPlayer={ajaxUrl:'http://localhost/g-playlist/wp-admin/admin-ajax.php'};
-  w.fetch=async()=>({ok:true,json:async()=>({success:true,data:{schema_version:1,playlist:{name:'Teste'},audio_assets:[{_player_id:'a',name:'Faixa de teste',file_url:'https://example.com/a.mp3',duration:60000}]}})});
+  w.fetch=async()=>({ok:true,json:async()=>({success:true,data:{schema_version:1,playlist:{name:'Teste'},audio_assets:[{_player_id:'a',name:'Faixa de teste',file_url:'https://example.com/a.mp3',duration:60000,premium:{description:'Voz "especial" <extra>'}}]}})});
   w.HTMLMediaElement.prototype.load=function(){};
   w.HTMLMediaElement.prototype.play=function(){plays++;this.dispatchEvent(new w.Event('play'));return Promise.resolve()};
   w.HTMLMediaElement.prototype.pause=function(){pauses++;this.dispatchEvent(new w.Event('pause'))};
   w.eval(require('fs').readFileSync('dist/main.js','utf8'));
   await new Promise(resolve=>setTimeout(resolve,30));
   assert.equal(w.document.querySelector('.music-player__track-title').textContent,'Faixa de teste');
+  const premium = w.document.querySelector('.music-player__track-premium');
+  assert.equal(premium.getAttribute('aria-label'), 'Voz mais cara');
+  assert.equal(premium.title, 'Voz "especial" <extra>');
   w.document.querySelector('.music-player__button--play').click();
   assert.equal(plays,1);assert.equal(w.document.querySelector('audio').src,'https://example.com/a.mp3');
   assert(w.document.querySelector('.music-player__item').classList.contains('playing'));

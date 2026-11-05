@@ -74,7 +74,7 @@ Documentos válidos ficam em cache por 30 segundos, por URL. O cache guarda o do
 - Preserva a ordem de `audio_assets`; não reaplica a ordenação da API antiga.
 - Usa `file_url` para reprodução e converte duração em milissegundos para `m:ss`. Duração desconhecida aparece como `—` até o áudio carregar seus metadados.
 - Exibe selos com texto escapado e cores limitadas a formatos seguros. Agendamento: início inclusivo, término exclusivo; limite nulo significa sem limite. Datas inválidas ocultam apenas o selo.
-- `premium` é mantido como metadado público e não bloqueia reprodução ou download.
+- `premium` exibe um ícone de etiqueta de voz mais cara quando a descrição contém texto. A descrição aparece no tooltip. A faixa continua disponível para reprodução e download.
 - Ícones podem ser URLs HTTPS ou classes CSS; classes não são usadas como `src` de imagem.
 - Textos opcionais nulos e campos adicionais não utilizados não impedem a reprodução.
 

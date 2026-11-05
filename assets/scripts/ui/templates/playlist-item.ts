@@ -1,7 +1,9 @@
-import { IAudioLabel } from "../../interfaces/audio-item.js";
+import { IAudioItem, IAudioLabel } from "../../interfaces/audio-item.js";
 import { renderLabelHTML } from "../labels.js";
 import { escapeHTML, safeAudioURL } from "../../utils/html.js";
-export function renderPlaylistItemHTML(id: string, title: string, tag: string, duration: string, order: number, url?: string, label?: IAudioLabel | null) {
+export function renderPlaylistItemHTML(id: string, title: string, tag: string, duration: string, order: number, url?: string, label?: IAudioLabel | null, premium?: IAudioItem["premium"]) {
+    const premiumDescription = typeof premium?.description === "string" ? premium.description.trim() : "";
+    
     return `
         <div 
             class="music-player__item" 
@@ -32,6 +34,14 @@ export function renderPlaylistItemHTML(id: string, title: string, tag: string, d
                     <div class="music-player__track-separator">-</div>
                     <div class="music-player__track-title">${escapeHTML(title)}</div>
                     <span data-label-slot>${renderLabelHTML(label, tag)}</span>
+                    ${premiumDescription ? `
+                        <span class="music-player__track-premium" role="img" aria-label="Voz mais cara" title="${escapeHTML(premiumDescription)}">
+                            <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20 13.5 13.5 20a2 2 0 0 1-2.8 0L3 12.3V3h9.3l7.7 7.7a2 2 0 0 1 0 2.8Z"/>
+                                <circle cx="7.5" cy="7.5" r="1"/>
+                            </svg>
+                        </span>
+                    ` : ''}
                 </div>
             </div>
 
