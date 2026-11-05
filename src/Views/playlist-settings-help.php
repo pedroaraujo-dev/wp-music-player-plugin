@@ -18,7 +18,8 @@ JSON;
 ?>
 <details style="margin-top: 12px; max-width: 900px; padding: 12px 16px; border: 1px solid #c3c4c7; border-radius: 4px; background: #fff;">
     <summary style="cursor: pointer; font-weight: 600;">Como cadastrar e exibir as playlists</summary>
-    <p>Este campo recebe uma lista de configurações. Não cole aqui o conteúdo do arquivo público que contém <code>schema_version</code> e <code>audio_assets</code>.</p>
+    <p>No painel de gerenciamento, abra <strong>Configurações &gt; Integração WordPress</strong>, selecione as playlists e cole aqui o JSON completo. Ao salvar, o cadastro é substituído pelas playlists exportadas e o campo passa a mostrar a lista editável. Use o <code>id</code> de cada item no shortcode.</p>
+    <p>Para montar ou complementar a lista manualmente, siga os passos abaixo. O arquivo público com <code>audio_assets</code> é lido pela URL de cada playlist.</p>
     <ol>
         <li>Escolha um <code>id</code> local único para cada playlist, como <code>trilhas</code> ou <code>vozes</code>. Ele será usado no shortcode.</li>
         <li>Em <code>url</code>, cole a URL HTTPS completa do JSON recebida do responsável pelo sistema. Bucket, ID público do site e ID público da playlist já fazem parte desse endereço; não precisam de campos separados. URLs de CDN também são aceitas.</li>

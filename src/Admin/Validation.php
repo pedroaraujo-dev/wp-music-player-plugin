@@ -40,12 +40,17 @@ class Validation
     {
         if (!is_string($value)) return null;
         if (trim($value) === '') return [];
-        if (!is_array(json_decode($value))) return null;
-        $banks = json_decode($value, true);
+        $banks = json_decode($value);
+        if (is_object($banks) && ($banks->schema_version ?? null) === 1) {
+            $banks = $banks->playlists ?? null;
+        }
+        if (!is_array($banks)) return null;
         $result = [];
         $ids = [];
         foreach ($banks as $bank) {
-            if (!is_array($bank) || !isset($bank['id']) || !is_string($bank['id']) || (isset($bank['name']) && !is_string($bank['name']))) return null;
+            if (!is_object($bank)) return null;
+            $bank = (array) $bank;
+            if (!isset($bank['id']) || !is_string($bank['id']) || (isset($bank['name']) && !is_string($bank['name']))) return null;
             $id = sanitize_text_field($bank['id']);
             $name = sanitize_text_field($bank['name'] ?? $bank['id']);
             if ($id === '' || $name === '' || in_array($id, $ids, true)) return null;
@@ -68,7 +73,7 @@ class Validation
     {
         $banks = self::banks($value);
         if ($banks !== null && count(array_filter($banks, function ($bank) { return empty($bank['url']); })) === 0) return wp_json_encode($banks, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
-        add_settings_error('sound_banks_data', 'invalid_banks', 'JSON inválido. Informe uma lista com id único e url HTTPS completa. name e icon são opcionais; sound_bank deve ser true ou false, sem aspas.');
+        add_settings_error('sound_banks_data', 'invalid_banks', 'JSON inválido. Cole a exportação da Integração WordPress (versão 1) ou informe uma lista com id único e url HTTPS completa. name e icon são opcionais; sound_bank deve ser true ou false, sem aspas.');
         return wp_json_encode(self::banks(get_option('sound_banks_data', '[]')) ?? [], JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 }

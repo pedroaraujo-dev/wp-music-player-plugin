@@ -13,6 +13,18 @@ check(count(Validation::banks($valid)) === 1, 'Banco válido rejeitado');
 foreach (['{', '{}', '[{}]', '[{"id":"x","name":3}]', '[{"id":"x","name":"X"},{"id":"x","name":"Y"}]', '[{"id":"x","name":"X","icon":"javascript:alert(1)"}]'] as $json) check(Validation::banks($json) === null, 'Banco inválido aceito');
 add_filter('pre_option_sound_banks_data', function () use ($valid) { return $valid; });
 check(json_decode(Validation::saveBanks('{'), true) === json_decode($valid, true), 'Não preservou JSON anterior');
+$export = '{"schema_version":1,"site":{"id":"site-1","name":"Site","domain":"example.com"},"playlists":[{"id":"playlist-1","name":"Trilhas","url":"https://storage.googleapis.com/bucket/playlists/site-1/playlist-1.json"}]}';
+check(json_decode(Validation::saveBanks($export), true) === [
+    ['id' => 'playlist-1', 'name' => 'Trilhas', 'icon' => '', 'url' => 'https://storage.googleapis.com/bucket/playlists/site-1/playlist-1.json'],
+], 'A exportação do painel não foi salva como lista');
+foreach ([
+    str_replace('"schema_version":1', '"schema_version":2', $export),
+    '{"schema_version":1,"playlists":{}}',
+    '{"schema_version":1,"audio_assets":[]}',
+    str_replace('https://', 'http://', $export),
+] as $invalidExport) {
+    check(json_decode(Validation::saveBanks($invalidExport), true) === json_decode($valid, true), 'Exportação inválida alterou o cadastro anterior');
+}
 $payload = "</textarea><script>alert(1)</script>";
 add_filter('pre_option_review_payload', function () use ($payload) { return $payload; });
 ob_start(); MusicPlayer\Admin\SettingsPage::renderTextAreaField(['id' => 'review_payload']); $html = ob_get_clean();

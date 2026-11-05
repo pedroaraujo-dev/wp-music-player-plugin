@@ -2,7 +2,9 @@
 
 ## Configurar no WordPress
 
-No menu **Music Player**, na seção própria **Playlists externas**, preencha **Playlists externas (JSON)** com a URL HTTPS completa de cada publicação:
+No painel de gerenciamento, abra **Configurações > Integração WordPress** e copie o JSON completo das playlists selecionadas. Cole em **Music Player > Playlists externas**, no campo **Playlists externas (JSON)**. Ao salvar, a seleção substitui o cadastro anterior e aparece como uma lista editável. Para preservar itens anteriores, combine-os na lista antes de salvar.
+
+Para configurar manualmente, informe a URL HTTPS completa de cada publicação:
 
 ```json
 [
