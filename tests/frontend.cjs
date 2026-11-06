@@ -92,7 +92,15 @@ test('bundle publicado carrega playlist, reproduz e pausa com dados controlados'
   assert.equal(w.document.querySelector('.music-player__track-title').textContent,'Faixa de teste');
   const premium = w.document.querySelector('.music-player__track-premium');
   assert.equal(premium.getAttribute('aria-label'), 'Voz mais cara');
-  assert.equal(premium.title, 'Voz "especial" <extra>');
+  assert.equal(premium.hasAttribute('title'), false);
+  const tooltip = w.document.getElementById(premium.getAttribute('aria-describedby'));
+  assert.equal(tooltip.getAttribute('role'), 'tooltip');
+  assert.equal(tooltip.textContent, 'Voz "especial" <extra>');
+  premium.focus();
+  assert.equal(tooltip.parentElement, w.document.body);
+  assert.equal(tooltip.hidden, false);
+  w.document.dispatchEvent(new w.KeyboardEvent('keydown', {key: 'Escape'}));
+  assert.equal(tooltip.hidden, true);
   w.document.querySelector('.music-player__button--play').click();
   assert.equal(plays,1);assert.equal(w.document.querySelector('audio').src,'https://example.com/a.mp3');
   assert(w.document.querySelector('.music-player__item').classList.contains('playing'));

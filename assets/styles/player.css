@@ -134,8 +134,27 @@
   justify-content: center;
   flex: 0 0 1.25rem;
   height: 1.25rem;
-  border: 1px solid currentColor;
+  position: relative;
+  background: var(--audio_tag_bg_color, #e9eaed);
+  color: var(--audio_tag_text_color, #30343b);
   border-radius: 50%;
+}
+
+.music-player__premium-tooltip {
+  position: fixed;
+  z-index: 100000;
+  width: max-content;
+  max-width: min(14rem, calc(100vw - 1rem));
+  box-sizing: border-box;
+  padding: 0.4rem 0.6rem;
+  border-radius: 0.4rem;
+  background: #20242b;
+  color: #fff;
+  font-size: 0.75rem;
+  line-height: 1.4;
+  overflow-wrap: anywhere;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 18%);
+  pointer-events: none;
 }
 
 .music-player__duration {
